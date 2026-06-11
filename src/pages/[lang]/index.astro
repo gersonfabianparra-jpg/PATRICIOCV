@@ -11,178 +11,319 @@ export function getStaticPaths() {
 
 const { lang } = Astro.params as { lang: Lang };
 const dict = lang === 'en' ? en : es;
+const t = useTranslations(lang);
 ---
 
 <Base
-  title={`Patricio Parra Galia — ${dict.hero.title_line1} ${dict.hero.title_line2} ${dict.hero.title_accent}`}
+  title={`Patricio Parra Galia — IT Infrastructure Engineer`}
   description={dict.meta.description}
   lang={lang}
 >
 
 <!-- ═══════════════════════════════════════════
-     HERO — Full dark, nombre enorme
-════════════════════════════════════════════ -->
+     HERO
+═══════════════════════════════════════════ -->
 <section
-  class="relative min-h-screen flex items-center overflow-hidden noise"
+  class="relative min-h-screen flex items-center overflow-hidden"
   style="background:#060C18;"
   aria-label="Hero"
 >
-  <!-- Grid background lines -->
-  <div class="absolute inset-0 grid-lines" aria-hidden="true"></div>
-  <!-- Color blobs -->
-  <div class="absolute inset-0" aria-hidden="true">
-    <div style="position:absolute;top:-15%;right:-5%;width:700px;height:700px;background:radial-gradient(circle,rgba(45,212,191,0.11) 0%,transparent 65%);pointer-events:none;"></div>
-    <div style="position:absolute;bottom:-20%;left:-8%;width:600px;height:600px;background:radial-gradient(circle,rgba(167,139,250,0.08) 0%,transparent 65%);pointer-events:none;"></div>
+  <!-- Aurora orbs -->
+  <div class="aurora-orb-1 absolute pointer-events-none" aria-hidden="true"
+    style="top:-15%;right:-8%;width:780px;height:780px;background:radial-gradient(circle,rgba(45,212,191,0.13) 0%,transparent 65%);border-radius:50%;"></div>
+  <div class="aurora-orb-2 absolute pointer-events-none" aria-hidden="true"
+    style="bottom:-20%;left:-10%;width:680px;height:680px;background:radial-gradient(circle,rgba(167,139,250,0.10) 0%,transparent 65%);border-radius:50%;"></div>
+  <div class="aurora-orb-3 absolute pointer-events-none" aria-hidden="true"
+    style="top:20%;right:30%;width:400px;height:400px;background:radial-gradient(circle,rgba(251,191,36,0.04) 0%,transparent 65%);border-radius:50%;"></div>
+
+  <!-- Dot grid -->
+  <div class="dot-grid absolute inset-0 opacity-40 pointer-events-none" aria-hidden="true"></div>
+
+  <!-- Fine grid lines -->
+  <div class="absolute inset-0 pointer-events-none" aria-hidden="true"
+    style="background-image:linear-gradient(rgba(45,212,191,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(45,212,191,0.04) 1px,transparent 1px);background-size:80px 80px;"></div>
+
+  <!-- Corner decorations -->
+  <div class="corner-decoration absolute top-24 left-6 hidden md:block" aria-hidden="true"></div>
+  <div class="corner-decoration-br absolute bottom-12 right-6 hidden md:block" aria-hidden="true"></div>
+
+  <!-- Bottom fade -->
+  <div class="absolute bottom-0 inset-x-0 h-40 pointer-events-none"
+    style="background:linear-gradient(to bottom,transparent,#060C18);" aria-hidden="true"></div>
+
+  <div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-28 w-full">
+    <div class="grid grid-cols-1 lg:grid-cols-[1fr_460px] gap-12 xl:gap-20 items-center">
+
+      <!-- ── Left: content ── -->
+      <div>
+        <!-- Status badge -->
+        <div class="reveal flex items-center gap-2.5 mb-8 w-fit">
+          <div
+            class="flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border"
+            style="border-color:rgba(52,211,153,0.25);background:rgba(52,211,153,0.06);"
+          >
+            <span class="pulse-dot"></span>
+            <span
+              class="font-mono text-[10px] tracking-[0.2em] uppercase"
+              style="color:rgba(52,211,153,0.85);"
+            >
+              Groningen, NL &nbsp;·&nbsp; {lang === 'es' ? 'Disponible' : 'Available'}
+            </span>
+          </div>
+        </div>
+
+        <!-- Name -->
+        <h1 class="reveal reveal-2 font-display" style="line-height:1;margin-bottom:0;">
+          <span
+            class="block font-medium"
+            style="font-size:clamp(15px,2.2vw,22px);letter-spacing:0.06em;color:rgba(91,122,158,0.8);font-family:'JetBrains Mono',monospace;margin-bottom:8px;"
+          >
+            Patricio Fabián
+          </span>
+          <span
+            class="text-shimmer block font-extrabold"
+            style="font-size:clamp(58px,9.5vw,118px);line-height:0.88;letter-spacing:-0.045em;"
+          >
+            PARRA<br/>GALIA
+          </span>
+        </h1>
+
+        <!-- Role divider -->
+        <div class="reveal reveal-3 flex items-center gap-4 mt-8 mb-4">
+          <div style="height:1px;width:32px;flex-shrink:0;background:linear-gradient(90deg,var(--A),transparent);"></div>
+          <p
+            class="font-medium"
+            style="font-size:clamp(13px,1.6vw,15px);color:rgba(91,122,158,0.75);letter-spacing:0.04em;"
+          >
+            {dict.hero.title_line1} {dict.hero.title_line2} · {dict.hero.title_accent}
+          </p>
+        </div>
+
+        <!-- Subtitle -->
+        <p class="reveal reveal-3" style="font-size:14.5px;line-height:1.85;color:rgba(91,122,158,0.65);max-width:490px;">
+          {dict.hero.subtitle}
+        </p>
+
+        <!-- CTAs -->
+        <div class="reveal reveal-4 flex flex-wrap gap-3 mt-9">
+          <a href={`/${lang}/cv/`} class="btn-primary">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>
+            {dict.hero.cta_primary}
+          </a>
+          <a href={`/${lang}/wyse/`} class="btn-ghost">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+            {dict.hero.cta_wyse}
+          </a>
+        </div>
+
+        <!-- Tech badges -->
+        <div class="reveal reveal-4 flex flex-wrap gap-2 mt-7">
+          {(['ITIL® Foundation','Dell WMS','Fortinet','VMware','AWS','Cisco Meraki'] as const).map((b, i) => (
+            <span
+              class={`chip float-${(i % 4) + 1}`}
+              style="background:rgba(45,212,191,0.05);color:rgba(91,122,158,0.65);border:1px solid rgba(45,212,191,0.12);"
+            >{b}</span>
+          ))}
+        </div>
+      </div>
+
+      <!-- ── Right: Terminal ── -->
+      <div class="reveal reveal-2 hidden lg:block">
+        <div class="terminal scan-container">
+          <div class="terminal-bar">
+            <div class="terminal-dot" style="background:#FF5F57;"></div>
+            <div class="terminal-dot" style="background:#FEBC2E;"></div>
+            <div class="terminal-dot" style="background:#28C840;"></div>
+            <span style="font-size:10px;color:rgba(91,122,158,0.5);margin-left:8px;">patricio@parra.tech — bash</span>
+          </div>
+          <div class="terminal-body">
+            <p><span class="t-prompt">~$ </span><span class="t-cmd">cat profile.json</span></p>
+            <br/>
+            <p><span class="t-out">&#123;</span></p>
+            <p>&nbsp;&nbsp;<span class="t-violet">"name"</span><span class="t-out">: </span><span class="t-green">"Patricio F. Parra Galia"</span><span class="t-out">,</span></p>
+            <p>&nbsp;&nbsp;<span class="t-violet">"location"</span><span class="t-out">: </span><span class="t-amber">"Groningen, Netherlands"</span><span class="t-out">,</span></p>
+            <p>&nbsp;&nbsp;<span class="t-violet">"role"</span><span class="t-out">: </span><span class="t-green">"IT Infrastructure Engineer"</span><span class="t-out">,</span></p>
+            <p>&nbsp;&nbsp;<span class="t-violet">"experience"</span><span class="t-out">: </span><span class="t-amber">"15+ years"</span><span class="t-out">,</span></p>
+            <p>&nbsp;&nbsp;<span class="t-violet">"countries"</span><span class="t-out">: </span><span class="t-amber">6</span><span class="t-out">,</span></p>
+            <p>&nbsp;&nbsp;<span class="t-violet">"cert"</span><span class="t-out">: </span><span class="t-green">"ITIL Foundation"</span><span class="t-out">,</span></p>
+            <p>&nbsp;&nbsp;<span class="t-violet">"specialty"</span><span class="t-out">: </span><span class="t-violet">"Dell Wyse Management Suite"</span><span class="t-out">,</span></p>
+            <p>&nbsp;&nbsp;<span class="t-violet">"status"</span><span class="t-out">: </span><span class="t-green">"AVAILABLE"</span></p>
+            <p><span class="t-out">&#125;</span></p>
+            <br/>
+            <p><span class="t-prompt">~$ </span><span class="t-cursor"></span></p>
+          </div>
+        </div>
+
+        <!-- Network SVG below terminal -->
+        <div class="mt-4 px-2 opacity-60" aria-hidden="true">
+          <svg viewBox="0 0 440 80" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full">
+            <circle cx="40"  cy="40" r="4" fill="rgba(45,212,191,0.6)"/>
+            <circle cx="140" cy="24" r="3" fill="rgba(167,139,250,0.5)"/>
+            <circle cx="220" cy="48" r="5" fill="rgba(45,212,191,0.7)"/>
+            <circle cx="300" cy="20" r="3" fill="rgba(251,191,36,0.5)"/>
+            <circle cx="400" cy="44" r="4" fill="rgba(167,139,250,0.5)"/>
+            <circle cx="100" cy="60" r="2.5" fill="rgba(45,212,191,0.35)"/>
+            <circle cx="260" cy="64" r="2.5" fill="rgba(167,139,250,0.35)"/>
+            <circle cx="360" cy="60" r="2.5" fill="rgba(45,212,191,0.35)"/>
+            <line x1="40"  y1="40" x2="100" y2="60"  stroke="rgba(45,212,191,0.2)"  stroke-width="1" stroke-dasharray="3 2"/>
+            <line x1="100" y1="60" x2="140" y2="24"  stroke="rgba(167,139,250,0.18)" stroke-width="1" stroke-dasharray="3 2"/>
+            <line x1="140" y1="24" x2="220" y2="48"  stroke="rgba(45,212,191,0.2)"  stroke-width="1" stroke-dasharray="3 2"/>
+            <line x1="220" y1="48" x2="260" y2="64"  stroke="rgba(45,212,191,0.18)" stroke-width="1" stroke-dasharray="3 2"/>
+            <line x1="220" y1="48" x2="300" y2="20"  stroke="rgba(167,139,250,0.2)" stroke-width="1" stroke-dasharray="3 2"/>
+            <line x1="300" y1="20" x2="360" y2="60"  stroke="rgba(251,191,36,0.15)" stroke-width="1" stroke-dasharray="3 2"/>
+            <line x1="360" y1="60" x2="400" y2="44"  stroke="rgba(167,139,250,0.2)" stroke-width="1" stroke-dasharray="3 2"/>
+          </svg>
+        </div>
+      </div>
+
+    </div>
   </div>
-  <!-- Gradient fade bottom -->
-  <div class="absolute bottom-0 inset-x-0 h-48 pointer-events-none" style="background:linear-gradient(to bottom,transparent,#060C18);" aria-hidden="true"></div>
 
-  <div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-32 w-full">
-
-    <!-- Eyebrow -->
-    <div class="reveal flex items-center gap-3 mb-7">
-      <div style="width:28px;height:1px;background:var(--A);flex-shrink:0;"></div>
-      <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.2em;color:var(--A);text-transform:uppercase;">
-        Groningen, Netherlands &nbsp;·&nbsp; {lang === 'es' ? 'Disponible' : 'Available'}
-      </span>
-    </div>
-
-    <!-- Name — enormous -->
-    <h1 class="reveal reveal-2 font-display" style="line-height:0.92;letter-spacing:-0.035em;font-weight:800;">
-      <span style="display:block;font-size:clamp(48px,7.5vw,96px);color:rgba(230,240,255,0.95);">Patricio Fabián</span>
-      <span style="display:block;font-size:clamp(48px,7.5vw,96px);color:var(--A);">Parra Galia</span>
-    </h1>
-
-    <!-- Horizontal rule + role -->
-    <div class="reveal reveal-3 flex items-center gap-4 my-7">
-      <div style="height:1px;width:36px;background:rgba(120,180,255,0.2);flex-shrink:0;"></div>
-      <p style="font-size:clamp(14px,1.8vw,17px);color:rgba(91,122,158,0.9);font-weight:500;letter-spacing:0.01em;">
-        {dict.hero.title_line1} {dict.hero.title_line2}&nbsp;·&nbsp;{dict.hero.title_accent}
-      </p>
-    </div>
-
-    <!-- Tagline -->
-    <p class="reveal reveal-3" style="color:rgba(91,122,158,0.7);font-size:15px;line-height:1.8;max-width:500px;">
-      {dict.hero.subtitle}
-    </p>
-
-    <!-- CTAs -->
-    <div class="reveal reveal-4 flex flex-wrap gap-3 mt-9">
-      <a
-        href={`/${lang}/cv`}
-        style="background:var(--A);color:#060C18;font-weight:700;font-size:13.5px;padding:11px 22px;border-radius:8px;display:inline-flex;align-items:center;gap:8px;transition:opacity 0.2s;box-shadow:0 0 28px rgba(45,212,191,0.25);"
-        class="hover:opacity-90"
-      >
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-        {dict.hero.cta_primary}
-      </a>
-      <a
-        href={`/${lang}/wyse`}
-        style="border:1px solid rgba(167,139,250,0.4);color:var(--V);font-weight:600;font-size:13.5px;padding:11px 22px;border-radius:8px;display:inline-flex;align-items:center;gap:8px;transition:all 0.2s;"
-        class="hover:bg-[rgba(167,139,250,0.08)] hover:border-[var(--V)]"
-      >
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-        {dict.hero.cta_wyse}
-      </a>
-    </div>
-
-    <!-- Tech badges row -->
-    <div class="reveal reveal-4 flex flex-wrap items-center gap-2 mt-8">
-      {['ITIL® Foundation', 'Dell WMS', 'Fortinet', 'VMware', 'AWS'].map(b => (
-        <span
-          class="chip"
-          style="background:rgba(120,180,255,0.05);color:rgba(91,122,158,0.7);border:1px solid rgba(120,180,255,0.1);"
-        >{b}</span>
-      ))}
-    </div>
-
-  </div>
-
-  <!-- Scroll hint -->
-  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2" style="color:rgba(91,122,158,0.35);" aria-hidden="true">
-    <div style="width:1px;height:40px;background:linear-gradient(to bottom,transparent,rgba(91,122,158,0.3))"></div>
-    <svg class="w-3.5 h-3.5 animate-bounce" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+  <!-- Scroll indicator -->
+  <div
+    class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5"
+    style="color:rgba(91,122,158,0.3);"
+    aria-hidden="true"
+  >
+    <div style="width:1px;height:36px;background:linear-gradient(to bottom,transparent,rgba(45,212,191,0.35));"></div>
+    <svg class="w-3 h-3 animate-bounce" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+    </svg>
   </div>
 </section>
 
+<hr class="gradient-hr" />
+
 
 <!-- ═══════════════════════════════════════════
-     STATS — números en ámbar, monospace
-════════════════════════════════════════════ -->
-<section style="background:var(--bg2);border-bottom:1px solid var(--ln);" aria-label="Key metrics">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10">
-    <dl class="grid grid-cols-2 md:grid-cols-4">
+     STATS — animated counters
+═══════════════════════════════════════════ -->
+<section
+  aria-label="Key metrics"
+  style="background:#060C18;"
+>
+  <div class="max-w-6xl mx-auto px-4 sm:px-6">
+    <dl class="grid grid-cols-2 md:grid-cols-4 divide-x"
+      style="divide-color:var(--ln);">
       {dict.stats.map((s, i) => (
         <div
-          class="reveal flex flex-col items-center py-6 text-center"
-          style={`border-right:${i < 3 ? '1px solid var(--ln)' : 'none'};`}
+          class="stat-card flex flex-col items-center py-10 text-center px-4"
+          style={`background: #060C18; ${i > 1 ? 'border-top:1px solid var(--ln);' : ''}`}
         >
-          <dt class="num" style="font-size:clamp(26px,4vw,40px);letter-spacing:-0.04em;">{s.value}</dt>
-          <dd style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--fg2);margin-top:6px;">{s.label}</dd>
+          <dt
+            class="num stat-num"
+            data-target={s.value}
+            style="font-size:clamp(28px,4.5vw,48px);letter-spacing:-0.05em;"
+          >{s.value}</dt>
+          <dd
+            style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--fg2);margin-top:8px;"
+          >{s.label}</dd>
         </div>
       ))}
     </dl>
   </div>
 </section>
 
+<hr class="gradient-hr" />
+
 
 <!-- ═══════════════════════════════════════════
-     ABOUT — perfil + mini timeline
-════════════════════════════════════════════ -->
-<section style="background:var(--bg);padding:96px 0;" aria-labelledby="about-h">
+     ABOUT
+═══════════════════════════════════════════ -->
+<section style="background:var(--bg);padding:100px 0;" aria-labelledby="about-h">
   <div class="max-w-6xl mx-auto px-4 sm:px-6">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
 
-      <!-- Left: text -->
+      <!-- Left: bio -->
       <div>
-        <span class="reveal chip" style="background:var(--A10);color:var(--A);border:1px solid var(--A20);margin-bottom:18px;display:inline-flex;">
-          {lang === 'es' ? '// perfil_profesional' : '// professional_profile'}
+        <span class="reveal section-label">
+          {lang === 'es' ? 'perfil_profesional' : 'professional_profile'}
         </span>
-        <h2 id="about-h" class="reveal font-display" style="font-size:clamp(26px,3.5vw,40px);font-weight:700;letter-spacing:-0.025em;color:var(--fg);line-height:1.15;margin-bottom:20px;">
+        <h2
+          id="about-h"
+          class="reveal font-display"
+          style="font-size:clamp(28px,4vw,46px);font-weight:800;letter-spacing:-0.03em;color:var(--fg);line-height:1.1;margin-bottom:22px;"
+        >
           {dict.about.title}
         </h2>
-        <p class="reveal" style="font-size:15px;line-height:1.85;color:var(--fg2);max-width:460px;">
+        <p class="reveal" style="font-size:15px;line-height:1.9;color:var(--fg2);max-width:470px;margin-bottom:28px;">
           {dict.about.text}
         </p>
-        <div class="reveal flex flex-wrap gap-2 mt-6">
-          {dict.about.badges.map(b => (
-            <span class="chip" style="background:var(--bg2);color:var(--fg2);border:1px solid var(--ln);">{b}</span>
+
+        <!-- Floating badges -->
+        <div class="reveal flex flex-wrap gap-2.5">
+          {dict.about.badges.map((b, i) => (
+            <span
+              class={`chip float-${(i % 4) + 1}`}
+              style="background:var(--bg2);color:var(--fg);border:1px solid var(--ln);font-size:12px;padding:5px 13px;"
+            >{b}</span>
           ))}
+        </div>
+
+        <!-- Countries decorator -->
+        <div class="reveal mt-8 flex items-center gap-3">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--fg2);">
+            {lang === 'es' ? 'Europa' : 'Europe'}
+          </span>
+          <div class="flex gap-1.5">
+            {['🇳🇱','🇧🇪','🇩🇪','🇵🇱','🇮🇹','🇬🇧'].map(flag => (
+              <span style="font-size:18px;line-height:1;" title={flag}>{flag}</span>
+            ))}
+          </div>
         </div>
       </div>
 
-      <!-- Right: experience timeline (top 3) -->
-      <div class="space-y-3">
-        {dict.experience.items.slice(0, 3).map((item, i) => (
-          <div
-            class="reveal glow-card rounded-xl p-5 flex gap-4"
-            style={`background:var(--bg3);border:1px solid var(--ln);`}
-          >
-            <div class="flex flex-col items-center pt-1 gap-1 shrink-0">
-              <div style={`width:8px;height:8px;border-radius:50%;flex-shrink:0;background:${i === 0 ? 'var(--G)' : 'rgba(91,122,158,0.3)'};${i === 0 ? 'box-shadow:0 0 8px var(--G)' : ''}`}></div>
-              {i < 2 && <div style="width:1px;flex:1;min-height:24px;background:var(--ln);"></div>}
-            </div>
-            <div class="min-w-0">
-              <div class="flex items-start justify-between gap-2">
-                <p style="font-weight:600;font-size:13.5px;color:var(--fg);line-height:1.3;">{item.role}</p>
-                {i === 0 && (
-                  <span class="chip shrink-0" style="background:rgba(52,211,153,0.1);color:var(--G);border:1px solid rgba(52,211,153,0.2);">
-                    {lang === 'es' ? 'Actual' : 'Current'}
-                  </span>
-                )}
+      <!-- Right: experience timeline -->
+      <div>
+        <span class="reveal section-label">
+          {lang === 'es' ? 'experiencia_reciente' : 'recent_experience'}
+        </span>
+        <div class="space-y-3">
+          {dict.experience.items.slice(0, 3).map((item, i) => (
+            <div
+              class="reveal timeline-item gb-card group flex gap-4 p-5"
+              style={`border:1px solid var(--ln);${i === 0 ? 'border-color:rgba(52,211,153,0.2);' : ''}`}
+            >
+              <div class="flex flex-col items-center pt-1.5 gap-1 shrink-0">
+                <div
+                  style={`width:8px;height:8px;border-radius:50%;flex-shrink:0;${i === 0
+                    ? 'background:var(--G);box-shadow:0 0 10px var(--G),0 0 20px rgba(52,211,153,0.3);'
+                    : 'background:rgba(91,122,158,0.25);border:1px solid var(--ln);'
+                  }`}
+                ></div>
+                {i < 2 && <div style="width:1px;flex:1;min-height:28px;background:linear-gradient(to bottom,var(--ln),transparent);"></div>}
               </div>
-              <p style="font-size:12px;color:var(--fg2);margin-top:3px;">{item.company} · {item.country}</p>
-              <p class="font-mono" style="font-size:11px;color:var(--A);margin-top:5px;">{item.period}</p>
+              <div class="min-w-0 flex-1">
+                <div class="flex items-start justify-between gap-2">
+                  <p style="font-weight:700;font-size:13.5px;color:var(--fg);line-height:1.3;">{item.role}</p>
+                  {i === 0 && (
+                    <span
+                      class="chip shrink-0 text-[10px]"
+                      style="background:rgba(52,211,153,0.08);color:var(--G);border:1px solid rgba(52,211,153,0.2);"
+                    >
+                      {lang === 'es' ? 'Actual' : 'Current'}
+                    </span>
+                  )}
+                </div>
+                <p style="font-size:12px;color:var(--fg2);margin-top:3px;">{item.company} · {item.country}</p>
+                <p class="font-mono" style="font-size:10.5px;color:var(--A);margin-top:5px;">{item.period}</p>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
         <a
-          href={`/${lang}/cv`}
-          style="display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--A);margin-top:8px;padding:2px 0;"
-          class="hover:opacity-75 transition-opacity"
+          href={`/${lang}/cv/`}
+          class="reveal inline-flex items-center gap-2 mt-6 text-sm font-semibold transition-all hover:gap-3"
+          style="color:var(--A);"
         >
           {lang === 'es' ? 'Ver trayectoria completa' : 'View full career'}
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+          </svg>
         </a>
       </div>
 
@@ -192,127 +333,149 @@ const dict = lang === 'en' ? en : es;
 
 
 <!-- ═══════════════════════════════════════════
-     DELL WMS — sección núcleo, violeta, diagrama SVG
-════════════════════════════════════════════ -->
+     DELL WMS — violet core section
+═══════════════════════════════════════════ -->
 <section
   class="relative overflow-hidden clip-diagonal-top clip-diagonal-bottom"
-  style="background:linear-gradient(135deg,#0D0520 0%,#110729 40%,#0A0518 100%);padding:100px 0;"
+  style="background:linear-gradient(140deg,#0B0420 0%,#120830 45%,#08041A 100%);padding:120px 0;"
   aria-labelledby="wyse-h"
 >
-  <!-- Violet glow blobs -->
+  <!-- Violet aurora -->
   <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
-    <div style="position:absolute;top:-10%;left:-5%;width:600px;height:600px;background:radial-gradient(circle,rgba(167,139,250,0.15) 0%,transparent 65%);"></div>
-    <div style="position:absolute;bottom:-10%;right:-5%;width:500px;height:500px;background:radial-gradient(circle,rgba(45,212,191,0.07) 0%,transparent 65%);"></div>
+    <div class="aurora-orb-1" style="position:absolute;top:-15%;left:-5%;width:700px;height:700px;background:radial-gradient(circle,rgba(167,139,250,0.18) 0%,transparent 60%);border-radius:50%;"></div>
+    <div class="aurora-orb-2" style="position:absolute;bottom:-15%;right:-5%;width:550px;height:550px;background:radial-gradient(circle,rgba(45,212,191,0.08) 0%,transparent 60%);border-radius:50%;"></div>
   </div>
-  <div class="absolute inset-0 grid-lines opacity-50" style="background-image:linear-gradient(rgba(167,139,250,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(167,139,250,0.05) 1px,transparent 1px);background-size:64px 64px;" aria-hidden="true"></div>
+  <!-- Dot grid violet -->
+  <div class="dot-grid-violet absolute inset-0 opacity-60 pointer-events-none" aria-hidden="true"></div>
 
   <div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 
       <!-- Text -->
       <div>
-        <span class="reveal chip" style="background:rgba(167,139,250,0.12);color:#A78BFA;border:1px solid rgba(167,139,250,0.25);margin-bottom:20px;display:inline-flex;">
+        <span class="reveal section-label" style="color:var(--V);">
           {dict.wyse_cta.badge}
         </span>
-        <h2 id="wyse-h" class="reveal font-display" style="font-size:clamp(28px,4vw,52px);font-weight:800;letter-spacing:-0.03em;color:rgba(230,240,255,0.95);line-height:1.05;margin-bottom:12px;">
-          Dell Wyse<br/>
-          <span style="color:#A78BFA;">Management Suite</span>
+        <h2
+          id="wyse-h"
+          class="reveal font-display"
+          style="font-size:clamp(30px,4.5vw,56px);font-weight:800;letter-spacing:-0.035em;line-height:1.0;margin-bottom:14px;"
+        >
+          <span style="color:rgba(230,240,255,0.95);">Dell Wyse</span><br/>
+          <span class="text-shimmer-violet">Management Suite</span>
         </h2>
-        <p class="reveal" style="font-size:14.5px;color:rgba(167,139,250,0.75);font-weight:500;margin-bottom:16px;">
+        <p class="reveal" style="font-size:14px;color:rgba(167,139,250,0.7);font-weight:500;margin-bottom:16px;letter-spacing:0.01em;">
           {dict.wyse_cta.subtitle}
         </p>
-        <p class="reveal" style="font-size:14px;line-height:1.8;color:rgba(91,122,158,0.8);max-width:440px;margin-bottom:28px;">
+        <p class="reveal" style="font-size:14px;line-height:1.85;color:rgba(91,122,158,0.75);max-width:440px;margin-bottom:30px;">
           {dict.wyse_cta.desc}
         </p>
 
-        <!-- Features -->
-        <ul class="reveal space-y-2.5 mb-10">
+        <ul class="reveal space-y-3 mb-10">
           {dict.wyse_cta.features.map(feat => (
             <li class="flex items-start gap-3">
-              <div style="width:16px;height:16px;border-radius:50%;background:rgba(167,139,250,0.15);border:1px solid rgba(167,139,250,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
-                <svg class="w-2 h-2" fill="none" stroke="#A78BFA" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <div
+                style="width:18px;height:18px;border-radius:5px;background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;"
+              >
+                <svg class="w-2.5 h-2.5" fill="none" stroke="#A78BFA" stroke-width="3" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                </svg>
               </div>
-              <span style="font-size:13.5px;color:rgba(230,240,255,0.65);">{feat}</span>
+              <span style="font-size:13.5px;color:rgba(230,240,255,0.6);">{feat}</span>
             </li>
           ))}
         </ul>
 
         <a
-          href={`/${lang}/wyse`}
-          style="background:linear-gradient(135deg,#7C3AED,#A78BFA);color:#fff;font-weight:700;font-size:13.5px;padding:12px 24px;border-radius:8px;display:inline-flex;align-items:center;gap:8px;box-shadow:0 0 32px rgba(167,139,250,0.3);transition:opacity 0.2s;"
-          class="hover:opacity-90"
+          href={`/${lang}/wyse/`}
+          class="reveal inline-flex items-center gap-2.5 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:translate-y-[-2px]"
+          style="background:linear-gradient(135deg,#6D28D9,#A78BFA);color:#fff;box-shadow:0 0 40px rgba(167,139,250,0.3),0 4px 20px rgba(109,40,217,0.3);"
         >
           {dict.wyse_cta.button}
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+          </svg>
         </a>
       </div>
 
-      <!-- SVG Architecture Diagram -->
+      <!-- Architecture diagram -->
       <div class="reveal reveal-2 flex justify-center">
         <div
-          style="background:rgba(15,7,40,0.7);border:1px solid rgba(167,139,250,0.2);border-radius:16px;padding:28px;width:100%;max-width:420px;backdrop-filter:blur(12px);"
+          class="scan-container w-full max-w-[440px]"
+          style="background:rgba(12,6,32,0.8);border:1px solid rgba(167,139,250,0.2);border-radius:18px;padding:28px;backdrop-filter:blur(16px);box-shadow:0 0 60px rgba(167,139,250,0.08),inset 0 1px 0 rgba(167,139,250,0.1);"
         >
-          <p class="font-mono" style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(167,139,250,0.5);margin-bottom:16px;text-align:center;">
-            WMS Topology
-          </p>
-          <svg viewBox="0 0 380 280" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full" aria-label="WMS architecture diagram">
+          <div class="flex items-center justify-between mb-4">
+            <p class="font-mono" style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(167,139,250,0.5);">
+              WMS Topology
+            </p>
+            <div class="flex items-center gap-1.5">
+              <div style="width:6px;height:6px;border-radius:50%;background:rgba(52,211,153,0.7);box-shadow:0 0 6px rgba(52,211,153,0.4);"></div>
+              <span class="font-mono" style="font-size:9px;color:rgba(52,211,153,0.6);">LIVE</span>
+            </div>
+          </div>
+
+          <svg viewBox="0 0 380 290" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full" aria-label="WMS architecture diagram">
             <!-- WMS Server -->
-            <rect x="115" y="8" width="150" height="52" rx="8" fill="rgba(167,139,250,0.12)" stroke="rgba(167,139,250,0.45)" stroke-width="1"/>
-            <text x="190" y="29" text-anchor="middle" fill="rgba(230,240,255,0.9)" font-family="JetBrains Mono, monospace" font-size="9.5" font-weight="600" letter-spacing="0.05em">WMS SERVER</text>
-            <text x="190" y="47" text-anchor="middle" fill="rgba(167,139,250,0.65)" font-family="JetBrains Mono, monospace" font-size="8">Central Management</text>
+            <rect x="110" y="8" width="160" height="54" rx="9" fill="rgba(167,139,250,0.1)" stroke="rgba(167,139,250,0.5)" stroke-width="1.5"/>
+            <text x="190" y="28" text-anchor="middle" fill="rgba(230,240,255,0.9)" font-family="JetBrains Mono,monospace" font-size="9.5" font-weight="700" letter-spacing="0.06em">WMS SERVER</text>
+            <text x="190" y="48" text-anchor="middle" fill="rgba(167,139,250,0.6)" font-family="JetBrains Mono,monospace" font-size="8">Central Management Console</text>
 
-            <!-- Vertical line down -->
-            <line x1="190" y1="60" x2="190" y2="98" stroke="rgba(167,139,250,0.35)" stroke-width="1" stroke-dasharray="4 3"/>
-            <circle cx="190" cy="62" r="2.5" fill="rgba(167,139,250,0.5)"/>
+            <!-- Connector down -->
+            <line x1="190" y1="62" x2="190" y2="100" stroke="rgba(167,139,250,0.4)" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <circle cx="190" cy="63" r="2.5" fill="rgba(167,139,250,0.6)"/>
+            <circle cx="190" cy="99" r="2.5" fill="rgba(45,212,191,0.6)"/>
 
-            <!-- Switch / Hub -->
-            <rect x="140" y="98" width="100" height="40" rx="6" fill="rgba(45,212,191,0.1)" stroke="rgba(45,212,191,0.45)" stroke-width="1"/>
-            <text x="190" y="116" text-anchor="middle" fill="rgba(230,240,255,0.85)" font-family="JetBrains Mono, monospace" font-size="8.5" font-weight="600">NETWORK</text>
-            <text x="190" y="130" text-anchor="middle" fill="rgba(45,212,191,0.7)" font-family="JetBrains Mono, monospace" font-size="7.5">Switch / Hub</text>
+            <!-- Network switch -->
+            <rect x="135" y="100" width="110" height="42" rx="7" fill="rgba(45,212,191,0.08)" stroke="rgba(45,212,191,0.4)" stroke-width="1.5"/>
+            <text x="190" y="118" text-anchor="middle" fill="rgba(230,240,255,0.85)" font-family="JetBrains Mono,monospace" font-size="8.5" font-weight="700">NETWORK</text>
+            <text x="190" y="133" text-anchor="middle" fill="rgba(45,212,191,0.65)" font-family="JetBrains Mono,monospace" font-size="7.5">Managed Switch</text>
 
-            <!-- Lines to clients -->
-            <line x1="165" y1="138" x2="55" y2="188" stroke="rgba(45,212,191,0.25)" stroke-width="1" stroke-dasharray="5 3"/>
-            <line x1="190" y1="138" x2="190" y2="188" stroke="rgba(45,212,191,0.25)" stroke-width="1" stroke-dasharray="5 3"/>
-            <line x1="215" y1="138" x2="325" y2="188" stroke="rgba(45,212,191,0.25)" stroke-width="1" stroke-dasharray="5 3"/>
+            <!-- Lines to thin clients -->
+            <line x1="155" y1="142" x2="55"  y2="192" stroke="rgba(45,212,191,0.22)" stroke-width="1" stroke-dasharray="5 3"/>
+            <line x1="190" y1="142" x2="190" y2="192" stroke="rgba(45,212,191,0.22)" stroke-width="1" stroke-dasharray="5 3"/>
+            <line x1="225" y1="142" x2="325" y2="192" stroke="rgba(45,212,191,0.22)" stroke-width="1" stroke-dasharray="5 3"/>
 
             <!-- Thin Client 1 -->
-            <rect x="8" y="188" width="95" height="50" rx="6" fill="rgba(15,30,54,0.6)" stroke="rgba(120,180,255,0.2)" stroke-width="1"/>
-            <text x="55" y="207" text-anchor="middle" fill="rgba(230,240,255,0.75)" font-family="JetBrains Mono, monospace" font-size="7.5" font-weight="600">THIN CLIENT</text>
-            <text x="55" y="220" text-anchor="middle" fill="rgba(91,122,158,0.6)" font-family="JetBrains Mono, monospace" font-size="7">Wyse 3040</text>
-            <circle cx="48" cy="231" r="3" fill="rgba(52,211,153,0.7)"/>
-            <text x="56" y="234" fill="rgba(52,211,153,0.65)" font-family="JetBrains Mono, monospace" font-size="6.5">Online</text>
+            <rect x="8"   y="192" width="95" height="52" rx="7" fill="rgba(15,30,54,0.7)" stroke="rgba(45,212,191,0.18)" stroke-width="1"/>
+            <text x="55"  y="210" text-anchor="middle" fill="rgba(230,240,255,0.7)" font-family="JetBrains Mono,monospace" font-size="7.5" font-weight="600">THIN CLIENT</text>
+            <text x="55"  y="223" text-anchor="middle" fill="rgba(91,122,158,0.55)" font-family="JetBrains Mono,monospace" font-size="7">Wyse 3040</text>
+            <circle cx="20" cy="235" r="3" fill="rgba(52,211,153,0.7)"/>
+            <text x="28" y="238" fill="rgba(52,211,153,0.6)" font-family="JetBrains Mono,monospace" font-size="7">Online</text>
 
             <!-- Thin Client 2 -->
-            <rect x="143" y="188" width="95" height="50" rx="6" fill="rgba(15,30,54,0.6)" stroke="rgba(120,180,255,0.2)" stroke-width="1"/>
-            <text x="190" y="207" text-anchor="middle" fill="rgba(230,240,255,0.75)" font-family="JetBrains Mono, monospace" font-size="7.5" font-weight="600">THIN CLIENT</text>
-            <text x="190" y="220" text-anchor="middle" fill="rgba(91,122,158,0.6)" font-family="JetBrains Mono, monospace" font-size="7">Wyse 5070</text>
-            <circle cx="183" cy="231" r="3" fill="rgba(52,211,153,0.7)"/>
-            <text x="191" y="234" fill="rgba(52,211,153,0.65)" font-family="JetBrains Mono, monospace" font-size="6.5">Online</text>
+            <rect x="143" y="192" width="95" height="52" rx="7" fill="rgba(15,30,54,0.7)" stroke="rgba(167,139,250,0.18)" stroke-width="1"/>
+            <text x="190" y="210" text-anchor="middle" fill="rgba(230,240,255,0.7)" font-family="JetBrains Mono,monospace" font-size="7.5" font-weight="600">THIN CLIENT</text>
+            <text x="190" y="223" text-anchor="middle" fill="rgba(91,122,158,0.55)" font-family="JetBrains Mono,monospace" font-size="7">Wyse 5070</text>
+            <circle cx="155" cy="235" r="3" fill="rgba(52,211,153,0.7)"/>
+            <text x="163" y="238" fill="rgba(52,211,153,0.6)" font-family="JetBrains Mono,monospace" font-size="7">Online</text>
 
             <!-- Thin Client 3 -->
-            <rect x="278" y="188" width="95" height="50" rx="6" fill="rgba(15,30,54,0.6)" stroke="rgba(120,180,255,0.2)" stroke-width="1"/>
-            <text x="325" y="207" text-anchor="middle" fill="rgba(230,240,255,0.75)" font-family="JetBrains Mono, monospace" font-size="7.5" font-weight="600">THIN CLIENT</text>
-            <text x="325" y="220" text-anchor="middle" fill="rgba(91,122,158,0.6)" font-family="JetBrains Mono, monospace" font-size="7">Wyse 7070</text>
-            <circle cx="318" cy="231" r="3" fill="rgba(52,211,153,0.7)"/>
-            <text x="326" y="234" fill="rgba(52,211,153,0.65)" font-family="JetBrains Mono, monospace" font-size="6.5">Online</text>
+            <rect x="278" y="192" width="95" height="52" rx="7" fill="rgba(15,30,54,0.7)" stroke="rgba(45,212,191,0.18)" stroke-width="1"/>
+            <text x="325" y="210" text-anchor="middle" fill="rgba(230,240,255,0.7)" font-family="JetBrains Mono,monospace" font-size="7.5" font-weight="600">THIN CLIENT</text>
+            <text x="325" y="223" text-anchor="middle" fill="rgba(91,122,158,0.55)" font-family="JetBrains Mono,monospace" font-size="7">Wyse 7070</text>
+            <circle cx="290" cy="235" r="3" fill="rgba(52,211,153,0.7)"/>
+            <text x="298" y="238" fill="rgba(52,211,153,0.6)" font-family="JetBrains Mono,monospace" font-size="7">Online</text>
 
-            <!-- VDI Backend bottom -->
-            <rect x="115" y="252" width="150" height="26" rx="5" fill="rgba(167,139,250,0.07)" stroke="rgba(167,139,250,0.25)" stroke-width="1" stroke-dasharray="4 2"/>
-            <text x="190" y="269" text-anchor="middle" fill="rgba(167,139,250,0.5)" font-family="JetBrains Mono, monospace" font-size="8">VDI Backend</text>
-
-            <!-- Vertical dashed up from VDI to switch -->
-            <line x1="190" y1="252" x2="190" y2="238" stroke="rgba(167,139,250,0.2)" stroke-width="1" stroke-dasharray="3 3"/>
+            <!-- VDI backend -->
+            <rect x="110" y="258" width="160" height="26" rx="5" fill="rgba(167,139,250,0.06)" stroke="rgba(167,139,250,0.2)" stroke-width="1" stroke-dasharray="4 2"/>
+            <text x="190" y="275" text-anchor="middle" fill="rgba(167,139,250,0.45)" font-family="JetBrains Mono,monospace" font-size="8.5">VDI Backend</text>
+            <line x1="55"  y1="244" x2="130" y2="258" stroke="rgba(167,139,250,0.12)" stroke-width="1" stroke-dasharray="3 3"/>
+            <line x1="190" y1="244" x2="190" y2="258" stroke="rgba(167,139,250,0.12)" stroke-width="1" stroke-dasharray="3 3"/>
+            <line x1="325" y1="244" x2="250" y2="258" stroke="rgba(167,139,250,0.12)" stroke-width="1" stroke-dasharray="3 3"/>
           </svg>
 
-          <!-- Legend -->
-          <div class="flex items-center justify-center gap-5 mt-4">
+          <div class="flex items-center justify-center gap-6 mt-4">
             <div class="flex items-center gap-1.5">
-              <div style="width:8px;height:8px;border-radius:50%;background:rgba(52,211,153,0.7);"></div>
-              <span class="font-mono" style="font-size:9px;color:rgba(91,122,158,0.6);">{lang === 'es' ? 'Conectado' : 'Connected'}</span>
+              <div style="width:7px;height:7px;border-radius:50%;background:rgba(52,211,153,0.7);"></div>
+              <span class="font-mono" style="font-size:8.5px;color:rgba(91,122,158,0.55);">{lang === 'es' ? 'Conectado' : 'Connected'}</span>
             </div>
             <div class="flex items-center gap-1.5">
-              <div style="width:8px;height:1px;background:rgba(45,212,191,0.4);"></div>
-              <span class="font-mono" style="font-size:9px;color:rgba(91,122,158,0.6);">{lang === 'es' ? 'Red gestionada' : 'Managed network'}</span>
+              <div style="width:10px;height:1px;background:rgba(45,212,191,0.4);"></div>
+              <span class="font-mono" style="font-size:8.5px;color:rgba(91,122,158,0.55);">{lang === 'es' ? 'Red gestionada' : 'Managed network'}</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <div style="width:10px;height:1px;background:rgba(167,139,250,0.3);stroke-dasharray:3 2;"></div>
+              <span class="font-mono" style="font-size:8.5px;color:rgba(91,122,158,0.55);">VDI</span>
             </div>
           </div>
         </div>
@@ -324,46 +487,54 @@ const dict = lang === 'en' ? en : es;
 
 
 <!-- ═══════════════════════════════════════════
-     SKILLS — lista editorial numerada
-════════════════════════════════════════════ -->
-<section style="background:var(--bg);padding:96px 0;" aria-labelledby="skills-h">
+     SKILLS — editorial numbered rows
+═══════════════════════════════════════════ -->
+<section style="background:var(--bg);padding:100px 0;" aria-labelledby="skills-h">
   <div class="max-w-6xl mx-auto px-4 sm:px-6">
 
     <div class="mb-14">
-      <span class="reveal chip" style="background:var(--A10);color:var(--A);border:1px solid var(--A20);margin-bottom:14px;display:inline-flex;">
-        {lang === 'es' ? '// stack_técnico' : '// technical_stack'}
+      <span class="reveal section-label">
+        {lang === 'es' ? 'stack_técnico' : 'technical_stack'}
       </span>
-      <h2 id="skills-h" class="reveal font-display" style="font-size:clamp(26px,3.5vw,40px);font-weight:700;letter-spacing:-0.025em;color:var(--fg);line-height:1.15;">
+      <h2
+        id="skills-h"
+        class="reveal font-display"
+        style="font-size:clamp(26px,3.5vw,42px);font-weight:800;letter-spacing:-0.03em;color:var(--fg);line-height:1.1;"
+      >
         {dict.skills.title}
       </h2>
+      <p class="reveal" style="font-size:14px;color:var(--fg2);margin-top:8px;">
+        {dict.skills.subtitle}
+      </p>
     </div>
 
-    <!-- Editorial numbered rows -->
     <div style="border-top:1px solid var(--ln);">
       {dict.skills.items.map((skill, i) => (
         <div
-          class="reveal group"
-          style="border-bottom:1px solid var(--ln);padding:28px 0;display:grid;grid-template-columns:56px 1fr auto;gap:20px;align-items:start;transition:background 0.2s;cursor:default;"
+          class="reveal skill-row"
+          style="border-bottom:1px solid var(--ln);padding:28px 0 28px 0;display:grid;grid-template-columns:64px 1fr auto;gap:20px;align-items:start;cursor:default;transition:all 0.25s;"
         >
-          <!-- Index number -->
-          <div class="num" style="font-size:13px;padding-top:2px;opacity:0.5;">
+          <div
+            class="num skill-num"
+            style="font-size:12px;padding-top:3px;opacity:0.35;transition:color 0.25s,opacity 0.25s;"
+          >
             0{i + 1}
           </div>
-
-          <!-- Content -->
           <div>
-            <p style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;color:var(--fg);margin-bottom:6px;letter-spacing:-0.01em;">
-              {skill.title}
-            </p>
-            <p style="font-size:13.5px;line-height:1.75;color:var(--fg2);max-width:520px;">
+            <p
+              class="font-display font-bold"
+              style="font-size:16.5px;color:var(--fg);margin-bottom:7px;letter-spacing:-0.01em;"
+            >{skill.title}</p>
+            <p style="font-size:13.5px;line-height:1.8;color:var(--fg2);max-width:530px;">
               {skill.desc}
             </p>
           </div>
-
-          <!-- Tags -->
-          <div class="flex flex-wrap gap-1.5 justify-end max-w-[220px]">
+          <div class="flex flex-wrap gap-1.5 justify-end max-w-[240px]">
             {skill.tags.map(tag => (
-              <span class="chip" style="background:var(--bg2);color:var(--fg2);border:1px solid var(--ln);">{tag}</span>
+              <span
+                class="chip"
+                style="background:var(--bg2);color:var(--fg2);border:1px solid var(--ln);font-size:10.5px;"
+              >{tag}</span>
             ))}
           </div>
         </div>
@@ -375,80 +546,107 @@ const dict = lang === 'en' ? en : es;
 
 
 <!-- ═══════════════════════════════════════════
-     EXPLORE — 3 tarjetas editoriales
-════════════════════════════════════════════ -->
-<section style="background:var(--bg2);padding:96px 0;border-top:1px solid var(--ln);" aria-labelledby="explore-h">
+     EXPLORE — gradient border cards with tilt
+═══════════════════════════════════════════ -->
+<section
+  style="background:var(--bg2);padding:100px 0;border-top:1px solid var(--ln);"
+  aria-labelledby="explore-h"
+>
   <div class="max-w-6xl mx-auto px-4 sm:px-6">
 
-    <div class="flex items-end justify-between mb-12 flex-wrap gap-4">
-      <div>
-        <span class="reveal chip" style="background:var(--A10);color:var(--A);border:1px solid var(--A20);margin-bottom:12px;display:inline-flex;">
-          {lang === 'es' ? '// navegar' : '// navigate'}
-        </span>
-        <h2 id="explore-h" class="reveal font-display" style="font-size:clamp(24px,3vw,36px);font-weight:700;letter-spacing:-0.025em;color:var(--fg);">
-          {dict.sections.explore_title}
-        </h2>
-      </div>
+    <div class="mb-14">
+      <span class="reveal section-label">
+        {lang === 'es' ? 'navegar' : 'navigate'}
+      </span>
+      <h2
+        id="explore-h"
+        class="reveal font-display"
+        style="font-size:clamp(26px,3.5vw,42px);font-weight:800;letter-spacing:-0.03em;color:var(--fg);line-height:1.1;"
+      >
+        {dict.sections.explore_title}
+      </h2>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
 
       <!-- CV card -->
       <a
-        href={`/${lang}/cv`}
-        class="reveal glow-card group flex flex-col rounded-2xl p-7"
-        style="background:var(--bg3);border:1px solid var(--ln);text-decoration:none;"
+        href={`/${lang}/cv/`}
+        class="reveal tilt-card gb-card group flex flex-col p-7 border"
+        style="border-color:var(--ln);text-decoration:none;"
       >
-        <div style="display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:10px;background:var(--A10);margin-bottom:20px;transition:background 0.2s;"
-          class="group-hover:bg-[var(--A20)]">
+        <div
+          class="w-11 h-11 rounded-xl flex items-center justify-center mb-6 transition-all group-hover:scale-110"
+          style="background:rgba(45,212,191,0.1);border:1px solid rgba(45,212,191,0.2);"
+        >
           <svg class="w-5 h-5" style="color:var(--A);" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
           </svg>
         </div>
-        <p style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;color:var(--fg);margin-bottom:8px;letter-spacing:-0.01em;">{dict.nav.cv}</p>
-        <p style="font-size:13.5px;line-height:1.7;color:var(--fg2);flex:1;">{dict.sections.cv_card_desc}</p>
-        <div style="display:flex;align-items:center;gap:5px;margin-top:20px;font-size:12.5px;font-weight:600;color:var(--A);" class="group-hover:gap-3 transition-all">
+        <p class="font-display font-bold mb-2.5" style="font-size:16px;color:var(--fg);letter-spacing:-0.01em;">{dict.nav.cv}</p>
+        <p style="font-size:13.5px;line-height:1.75;color:var(--fg2);flex:1;">{dict.sections.cv_card_desc}</p>
+        <div
+          class="flex items-center gap-2 mt-6 text-xs font-bold transition-all group-hover:gap-3"
+          style="color:var(--A);"
+        >
           {lang === 'es' ? 'Ver trayectoria' : 'View career'}
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+          </svg>
         </div>
       </a>
 
       <!-- Blog card -->
       <a
-        href={`/${lang}/blog`}
-        class="reveal reveal-2 glow-card group flex flex-col rounded-2xl p-7"
-        style="background:var(--bg3);border:1px solid var(--ln);text-decoration:none;"
+        href={`/${lang}/blog/`}
+        class="reveal reveal-2 tilt-card gb-card group flex flex-col p-7 border"
+        style="border-color:var(--ln);text-decoration:none;"
       >
-        <div style="display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:10px;background:var(--A10);margin-bottom:20px;transition:background 0.2s;"
-          class="group-hover:bg-[var(--A20)]">
+        <div
+          class="w-11 h-11 rounded-xl flex items-center justify-center mb-6 transition-all group-hover:scale-110"
+          style="background:rgba(45,212,191,0.1);border:1px solid rgba(45,212,191,0.2);"
+        >
           <svg class="w-5 h-5" style="color:var(--A);" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
           </svg>
         </div>
-        <p style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;color:var(--fg);margin-bottom:8px;letter-spacing:-0.01em;">{dict.nav.blog}</p>
-        <p style="font-size:13.5px;line-height:1.7;color:var(--fg2);flex:1;">{dict.sections.blog_card_desc}</p>
-        <div style="display:flex;align-items:center;gap:5px;margin-top:20px;font-size:12.5px;font-weight:600;color:var(--A);" class="group-hover:gap-3 transition-all">
+        <p class="font-display font-bold mb-2.5" style="font-size:16px;color:var(--fg);letter-spacing:-0.01em;">{dict.nav.blog}</p>
+        <p style="font-size:13.5px;line-height:1.75;color:var(--fg2);flex:1;">{dict.sections.blog_card_desc}</p>
+        <div
+          class="flex items-center gap-2 mt-6 text-xs font-bold transition-all group-hover:gap-3"
+          style="color:var(--A);"
+        >
           {lang === 'es' ? 'Explorar blog' : 'Explore blog'}
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+          </svg>
         </div>
       </a>
 
-      <!-- Shop card -->
+      <!-- Shop/WMS card -->
       <a
-        href={`/${lang}/shop`}
-        class="reveal reveal-3 glow-card group flex flex-col rounded-2xl p-7"
-        style="background:var(--bg3);border:1px solid var(--ln);text-decoration:none;"
+        href={`/${lang}/wyse/`}
+        class="reveal reveal-3 tilt-card gb-card gb-card-violet group flex flex-col p-7 border"
+        style="border-color:var(--ln);text-decoration:none;"
       >
-        <div style="display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:10px;background:var(--V10);margin-bottom:20px;transition:background 0.2s;">
+        <div
+          class="w-11 h-11 rounded-xl flex items-center justify-center mb-6 transition-all group-hover:scale-110"
+          style="background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.2);"
+        >
           <svg class="w-5 h-5" style="color:var(--V);" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
           </svg>
         </div>
-        <p style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;color:var(--fg);margin-bottom:8px;letter-spacing:-0.01em;">{dict.nav.shop}</p>
-        <p style="font-size:13.5px;line-height:1.7;color:var(--fg2);flex:1;">{dict.sections.shop_card_desc}</p>
-        <div style="display:flex;align-items:center;gap:5px;margin-top:20px;font-size:12.5px;font-weight:600;color:var(--V);" class="group-hover:gap-3 transition-all">
-          {lang === 'es' ? 'Ver tienda' : 'Visit shop'}
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+        <p class="font-display font-bold mb-2.5" style="font-size:16px;color:var(--fg);letter-spacing:-0.01em;">Dell WMS</p>
+        <p style="font-size:13.5px;line-height:1.75;color:var(--fg2);flex:1;">{dict.wyse_cta.subtitle}</p>
+        <div
+          class="flex items-center gap-2 mt-6 text-xs font-bold transition-all group-hover:gap-3"
+          style="color:var(--V);"
+        >
+          {lang === 'es' ? 'Explorar WMS' : 'Explore WMS'}
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+          </svg>
         </div>
       </a>
 
@@ -458,11 +656,62 @@ const dict = lang === 'en' ? en : es;
 
 </Base>
 
-<!-- Scroll reveal observer -->
 <script>
-  const observer = new IntersectionObserver(
-    (entries) => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('is-visible'); }),
-    { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+  /* ── Scroll reveal ── */
+  const revealObserver = new IntersectionObserver(
+    entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('is-visible'); }),
+    { threshold: 0.07, rootMargin: '0px 0px -50px 0px' }
   );
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+  /* ── Stagger badge reveal ── */
+  const staggerObserver = new IntersectionObserver(
+    entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('is-visible'); }),
+    { threshold: 0.2 }
+  );
+  document.querySelectorAll('.stagger-children').forEach(el => staggerObserver.observe(el));
+
+  /* ── Animated stat counter ── */
+  function animateCount(el: HTMLElement, from: number, to: number, duration = 1800) {
+    const start = performance.now();
+    const update = (now: number) => {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.round(from + (to - from) * eased).toString();
+      if (progress < 1) requestAnimationFrame(update);
+      else el.textContent = to + (el.dataset.suffix ?? '');
+    };
+    requestAnimationFrame(update);
+  }
+
+  const statObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target as HTMLElement;
+      const raw = el.dataset.target ?? '';
+      const numeric = parseInt(raw.replace(/\D/g, ''), 10);
+      if (!isNaN(numeric) && numeric > 0) {
+        const suffix = raw.replace(/[\d]/g, '');
+        el.dataset.suffix = suffix;
+        animateCount(el, 0, numeric, 1600);
+      }
+      el.style.animation = 'count-up-in 0.7s ease forwards';
+      statObserver.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll<HTMLElement>('.stat-num').forEach(el => statObserver.observe(el));
+
+  /* ── 3D tilt effect on explore cards ── */
+  document.querySelectorAll<HTMLElement>('.tilt-card').forEach(card => {
+    card.addEventListener('mousemove', (e: MouseEvent) => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width  - 0.5;
+      const y = (e.clientY - rect.top)  / rect.height - 0.5;
+      card.style.transform = `perspective(700px) rotateY(${x * 7}deg) rotateX(${-y * 7}deg) translateY(-3px)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  });
 </script>
