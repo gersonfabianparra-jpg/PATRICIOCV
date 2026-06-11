@@ -201,8 +201,9 @@ html.dark {
   50%       { transform: translateY(-6px); }
 }
 @keyframes shimmer-sweep {
-  0%   { background-position: -300% center; }
-  100% { background-position: 300% center; }
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 @keyframes pulse-ring {
   0%   { transform: scale(1); opacity: 0.75; }
@@ -246,34 +247,33 @@ html.dark {
 }
 .text-shimmer {
   background: linear-gradient(
-    90deg,
-    var(--fg) 0%,
-    var(--A)  20%,
-    var(--fg) 40%,
-    var(--fg) 60%,
-    var(--V)  80%,
-    var(--fg) 100%
+    105deg,
+    rgba(214, 232, 255, 0.95) 0%,
+    #2DD4BF                   30%,
+    rgba(214, 232, 255, 0.92) 50%,
+    #A78BFA                   70%,
+    rgba(214, 232, 255, 0.95) 100%
   );
-  background-size: 300% auto;
+  background-size: 200% 100%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: shimmer-sweep 7s linear infinite;
+  animation: shimmer-sweep 12s ease-in-out infinite;
 }
 .text-shimmer-violet {
   background: linear-gradient(
-    90deg,
-    rgba(230,240,255,0.9) 0%,
-    var(--V) 25%,
-    rgba(230,240,255,0.9) 50%,
-    var(--A) 75%,
-    rgba(230,240,255,0.9) 100%
+    105deg,
+    rgba(220, 210, 255, 0.95) 0%,
+    #A78BFA                   30%,
+    rgba(220, 210, 255, 0.9)  50%,
+    #2DD4BF                   70%,
+    rgba(220, 210, 255, 0.95) 100%
   );
-  background-size: 300% auto;
+  background-size: 200% 100%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: shimmer-sweep 8s linear infinite;
+  animation: shimmer-sweep 14s ease-in-out infinite;
 }
 
 /* ═══════════════════════════════════════════
