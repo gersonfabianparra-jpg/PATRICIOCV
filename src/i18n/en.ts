@@ -134,13 +134,87 @@ export const en = {
   },
   cv: {
     title:          'Professional career',
+    subtitle:       'Full career timeline, certifications, and technical skills',
     download:       'Download CV (PDF)',
+    print:          'Print',
     experience:     'Experience',
     education:      'Education',
-    skills:         'Skills',
+    skills:         'Technical skills',
     certifications: 'Certifications',
+    languages:      'Languages',
     references:     'References',
     present:        'Present',
+    current_role:   'Current',
+    contact_label:  'Contact',
+    profile_label:  'Profile',
+  },
+  education: {
+    items: [
+      {
+        degree:   "Bachelor's Degree in Telecommunications, Connectivity, and Networks Engineering",
+        school:   'Instituto Profesional INACAP',
+        location: 'Santiago, Chile',
+        year:     '2014',
+        duration: '4 years · HBO bachelor\'s level',
+      },
+      {
+        degree:   'Certificate in Applied Project Management',
+        school:   'Instituto Profesional INACAP',
+        location: 'Santiago, Chile',
+        year:     '2015',
+        duration: '1 year · HBO bachelor\'s level',
+      },
+      {
+        degree:   'ITIL® Foundation Certificate in IT Service Management',
+        school:   'Netsolution Learning',
+        location: 'Santiago, Chile',
+        year:     '2018',
+        duration: '20 hours',
+      },
+    ],
+  },
+  certifications: {
+    items: [
+      {
+        name:   'ITIL® Foundation Certificate',
+        full:   'ITIL® Foundation Certificate in IT Service Management',
+        issuer: 'Netsolution Learning',
+        year:   '2018',
+      },
+      {
+        name:   'Applied Project Management',
+        full:   'Certificate in Applied Project Management',
+        issuer: 'Instituto Profesional INACAP',
+        year:   '2015',
+      },
+    ],
+  },
+  languages_spoken: [
+    { name: 'Spanish', level: 'Native' },
+    { name: 'English', level: 'Professional' },
+  ],
+  references: {
+    label: 'Available upon request. Listed below as per CV.',
+    items: [
+      {
+        name:     'Jose Márquez',
+        position: 'IT Manager',
+        company:  'Laboratorio Biosano S.A.',
+        email:    'jmarquez@biosano.cl',
+      },
+      {
+        name:     'Patricio Cisterna',
+        position: 'IT Manager',
+        company:  'ACFCAPITAL S.A.',
+        email:    'pcisterna@acfcapital.cl',
+      },
+      {
+        name:     'Pawel Gogacz',
+        position: 'IT Manager',
+        company:  'Radial Europe',
+        email:    'pgogacz@radial.com',
+      },
+    ],
   },
   shop: {
     title:       'Shop',

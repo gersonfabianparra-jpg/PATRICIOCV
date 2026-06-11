@@ -1,0 +1,401 @@
+---
+import Base from '../../layouts/Base.astro';
+import { useTranslations, languages } from '../../i18n/utils';
+import { en } from '../../i18n/en';
+import { es } from '../../i18n/es';
+import type { Lang } from '../../i18n/utils';
+
+export function getStaticPaths() {
+  return Object.keys(languages).map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: Lang };
+const d = lang === 'en' ? en : es;
+---
+
+<Base
+  title={`${d.cv.title} — Patricio Parra Galia`}
+  description={d.cv.subtitle}
+  lang={lang}
+>
+
+<!-- ══════════════════════════════════════════
+     PAGE HERO — dark header, download CTA
+══════════════════════════════════════════ -->
+<section
+  class="relative overflow-hidden"
+  style="background:#060C18; border-bottom:1px solid rgba(120,180,255,0.07);"
+  aria-label="CV header"
+>
+  <div class="absolute inset-0 grid-lines" aria-hidden="true"></div>
+  <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+    <div style="position:absolute;top:-30%;right:0;width:500px;height:500px;background:radial-gradient(circle,rgba(45,212,191,0.08) 0%,transparent 65%);"></div>
+  </div>
+
+  <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 py-16 md:py-20">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-8">
+
+      <!-- Name & title block -->
+      <div>
+        <span class="chip" style="background:var(--A10);color:var(--A);border:1px solid var(--A20);margin-bottom:16px;display:inline-flex;">
+          {lang === 'es' ? '// trayectoria_profesional' : '// professional_career'}
+        </span>
+        <h1 class="font-display" style="font-size:clamp(32px,5vw,56px);font-weight:800;letter-spacing:-0.03em;color:rgba(230,240,255,0.95);line-height:1.05;">
+          Patricio Fabián<br/>
+          <span style="color:var(--A);">Parra Galia</span>
+        </h1>
+        <p style="font-size:15px;color:rgba(91,122,158,0.85);margin-top:10px;font-weight:500;">
+          {d.hero.title_line1} {d.hero.title_line2} · {d.hero.title_accent}
+        </p>
+
+        <!-- Contact row -->
+        <div class="flex flex-wrap gap-x-5 gap-y-2 mt-5">
+          {[
+            { icon: 'M15 10.5a3 3 0 11-6 0 3 3 0 016 0zM19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z', text: d.footer.contact.location, href: null },
+            { icon: 'M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75', text: 'parragalia.p@gmail.com', href: 'mailto:parragalia.p@gmail.com' },
+            { icon: 'M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z', text: 'LinkedIn', href: 'https://www.linkedin.com/in/PatricioParraGalia', linkedin: true },
+          ].map(item => (
+            item.href ? (
+              <a
+                href={item.href}
+                target={item.linkedin ? '_blank' : undefined}
+                rel={item.linkedin ? 'noopener noreferrer' : undefined}
+                style="display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:rgba(91,122,158,0.7);"
+                class="hover:text-[var(--A)] transition-colors"
+              >
+                <svg class="w-3.5 h-3.5 shrink-0" fill={item.linkedin ? 'currentColor' : 'none'} stroke={item.linkedin ? 'none' : 'currentColor'} stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d={item.icon}/>
+                </svg>
+                {item.text}
+              </a>
+            ) : (
+              <span style="display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:rgba(91,122,158,0.7);">
+                <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d={item.icon}/>
+                </svg>
+                {item.text}
+              </span>
+            )
+          ))}
+        </div>
+      </div>
+
+      <!-- Download / Print CTAs -->
+      <div class="flex flex-wrap gap-3 shrink-0">
+        <a
+          href="/cv/patricio-parra-galia-cv.pdf"
+          download
+          style="background:var(--A);color:#060C18;font-weight:700;font-size:13px;padding:10px 20px;border-radius:8px;display:inline-flex;align-items:center;gap:8px;box-shadow:0 0 24px rgba(45,212,191,0.2);transition:opacity 0.2s;white-space:nowrap;"
+          class="hover:opacity-90"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/>
+          </svg>
+          {d.cv.download}
+        </a>
+        <button
+          onclick="window.print()"
+          style="border:1px solid rgba(120,180,255,0.15);color:rgba(91,122,158,0.8);font-size:13px;padding:10px 18px;border-radius:8px;display:inline-flex;align-items:center;gap:7px;background:transparent;cursor:pointer;transition:all 0.2s;white-space:nowrap;"
+          class="hover:border-[var(--A)] hover:text-[var(--A)]"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0110.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0l.229 2.523a1.125 1.125 0 01-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0021 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 00-1.913-.247M6.34 18H5.25A2.25 2.25 0 013 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.041 48.041 0 011.913-.247m10.5 0a48.536 48.536 0 00-10.5 0m10.5 0V3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.659M18 10.5h.008v.008H18V10.5zm-3 0h.008v.008H15V10.5z"/>
+          </svg>
+          {d.cv.print}
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     MAIN CONTENT
+══════════════════════════════════════════ -->
+<div style="background:var(--bg);">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 py-16 space-y-20">
+
+    <!-- ── EXPERIENCE ───────────────────────── -->
+    <section aria-labelledby="exp-h">
+      <div class="flex items-center gap-4 mb-10">
+        <h2 id="exp-h" class="reveal font-display" style="font-size:clamp(20px,2.5vw,28px);font-weight:700;letter-spacing:-0.02em;color:var(--fg);">
+          {d.cv.experience}
+        </h2>
+        <div style="flex:1;height:1px;background:var(--ln);"></div>
+        <span class="chip font-mono" style="background:var(--A10);color:var(--A);border:1px solid var(--A20);">
+          {d.experience.items.length} {lang === 'es' ? 'posiciones' : 'positions'}
+        </span>
+      </div>
+
+      <!-- Timeline -->
+      <div class="relative">
+        <!-- Vertical line -->
+        <div
+          class="absolute hidden sm:block"
+          style="left:15px;top:8px;bottom:8px;width:1px;background:linear-gradient(to bottom,var(--A),rgba(45,212,191,0.1));"
+          aria-hidden="true"
+        ></div>
+
+        <div class="space-y-0">
+          {d.experience.items.map((item, i) => (
+            <div class="reveal group relative sm:pl-12 pb-10">
+
+              <!-- Timeline dot -->
+              <div
+                class="absolute hidden sm:flex items-center justify-center"
+                style={`left:8px;top:6px;width:16px;height:16px;border-radius:50%;background:${i === 0 ? 'var(--G)' : 'var(--bg3)'};border:2px solid ${i === 0 ? 'var(--G)' : 'var(--ln)'};${i === 0 ? 'box-shadow:0 0 10px rgba(52,211,153,0.5)' : ''}`}
+                aria-hidden="true"
+              >
+                {i === 0 && <div style="width:5px;height:5px;border-radius:50%;background:#060C18;"></div>}
+              </div>
+
+              <!-- Card -->
+              <div
+                class="glow-card rounded-2xl p-6"
+                style={`background:var(--bg3);border:1px solid var(--ln);${i === 0 ? 'border-color:rgba(52,211,153,0.2)' : ''}`}
+              >
+                <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-3">
+                  <div>
+                    <div class="flex items-center gap-2 flex-wrap mb-1">
+                      <h3 class="font-display" style="font-weight:700;font-size:16px;color:var(--fg);letter-spacing:-0.01em;">{item.role}</h3>
+                      {i === 0 && (
+                        <span class="chip" style="background:rgba(52,211,153,0.1);color:var(--G);border:1px solid rgba(52,211,153,0.25);">
+                          {d.cv.current_role}
+                        </span>
+                      )}
+                    </div>
+                    <p style="font-size:14px;color:var(--fg2);font-weight:500;">
+                      {item.company}
+                      <span style="opacity:0.5;margin:0 6px;">·</span>
+                      {item.country}
+                    </p>
+                  </div>
+                  <span class="font-mono shrink-0" style="font-size:11.5px;color:var(--N);letter-spacing:0.04em;background:rgba(251,191,36,0.08);padding:3px 9px;border-radius:4px;border:1px solid rgba(251,191,36,0.15);">
+                    {item.period}
+                  </span>
+                </div>
+                <p style="font-size:13.5px;line-height:1.75;color:var(--fg2);">{item.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ── SKILLS ────────────────────────────── -->
+    <section aria-labelledby="skills-h">
+      <div class="flex items-center gap-4 mb-10">
+        <h2 id="skills-h" class="reveal font-display" style="font-size:clamp(20px,2.5vw,28px);font-weight:700;letter-spacing:-0.02em;color:var(--fg);">
+          {d.cv.skills}
+        </h2>
+        <div style="flex:1;height:1px;background:var(--ln);"></div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {d.skills.items.map((skill, i) => (
+          <div
+            class="reveal glow-card rounded-2xl p-5"
+            style="background:var(--bg3);border:1px solid var(--ln);"
+          >
+            <div class="flex items-start gap-3 mb-3">
+              <span class="num" style="font-size:11px;opacity:0.4;margin-top:2px;">0{i+1}</span>
+              <h3 class="font-display" style="font-weight:700;font-size:14px;color:var(--fg);letter-spacing:-0.01em;">{skill.title}</h3>
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              {skill.tags.map(tag => (
+                <span class="chip" style="background:var(--bg2);color:var(--fg2);border:1px solid var(--ln);">{tag}</span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+
+    <!-- ── EDUCATION ─────────────────────────── -->
+    <section aria-labelledby="edu-h">
+      <div class="flex items-center gap-4 mb-10">
+        <h2 id="edu-h" class="reveal font-display" style="font-size:clamp(20px,2.5vw,28px);font-weight:700;letter-spacing:-0.02em;color:var(--fg);">
+          {d.cv.education}
+        </h2>
+        <div style="flex:1;height:1px;background:var(--ln);"></div>
+      </div>
+
+      <div class="space-y-4">
+        {d.education.items.map((item) => (
+          <div
+            class="reveal glow-card rounded-2xl p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+            style="background:var(--bg3);border:1px solid var(--ln);"
+          >
+            <div>
+              <h3 class="font-display" style="font-weight:700;font-size:15px;color:var(--fg);letter-spacing:-0.01em;margin-bottom:4px;">{item.degree}</h3>
+              <p style="font-size:13.5px;color:var(--fg2);">{item.school} · {item.location}</p>
+              <p class="font-mono" style="font-size:11px;color:var(--fg2);opacity:0.6;margin-top:4px;">{item.duration}</p>
+            </div>
+            <span class="num shrink-0" style="font-size:22px;letter-spacing:-0.03em;">{item.year}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+
+    <!-- ── CERTIFICATIONS + LANGUAGES ──────── -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+
+      <!-- Certifications -->
+      <section aria-labelledby="cert-h">
+        <div class="flex items-center gap-4 mb-8">
+          <h2 id="cert-h" class="reveal font-display" style="font-size:clamp(18px,2.2vw,24px);font-weight:700;letter-spacing:-0.02em;color:var(--fg);">
+            {d.cv.certifications}
+          </h2>
+          <div style="flex:1;height:1px;background:var(--ln);"></div>
+        </div>
+
+        <div class="space-y-4">
+          {d.certifications.items.map((cert) => (
+            <div
+              class="reveal glow-card rounded-xl p-5"
+              style="background:var(--bg3);border:1px solid var(--ln);"
+            >
+              <div class="flex items-start gap-4">
+                <div
+                  style="width:38px;height:38px;border-radius:10px;background:var(--A10);border:1px solid var(--A20);display:flex;align-items:center;justify-content:center;flex-shrink:0;"
+                >
+                  <svg class="w-4.5 h-4.5" style="color:var(--A);" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5"/>
+                  </svg>
+                </div>
+                <div class="min-w-0">
+                  <p class="font-display" style="font-weight:700;font-size:13.5px;color:var(--fg);margin-bottom:3px;">{cert.name}</p>
+                  <p style="font-size:12px;color:var(--fg2);">{cert.issuer}</p>
+                  <span class="num" style="font-size:13px;display:block;margin-top:5px;">{cert.year}</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- Languages -->
+      <section aria-labelledby="lang-h">
+        <div class="flex items-center gap-4 mb-8">
+          <h2 id="lang-h" class="reveal font-display" style="font-size:clamp(18px,2.2vw,24px);font-weight:700;letter-spacing:-0.02em;color:var(--fg);">
+            {d.cv.languages}
+          </h2>
+          <div style="flex:1;height:1px;background:var(--ln);"></div>
+        </div>
+
+        <div class="space-y-3">
+          {d.languages_spoken.map((l) => (
+            <div
+              class="reveal glow-card rounded-xl p-5 flex items-center justify-between"
+              style="background:var(--bg3);border:1px solid var(--ln);"
+            >
+              <div class="flex items-center gap-3">
+                <div style="width:38px;height:38px;border-radius:10px;background:var(--V10);border:1px solid var(--V10);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg class="w-4.5 h-4.5" style="color:var(--V);" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 21l5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 016-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m9.334-12.138c.896.061 1.785.147 2.666.257m-4.589 8.495a18.023 18.023 0 01-3.827-5.802"/>
+                  </svg>
+                </div>
+                <span class="font-display" style="font-weight:700;font-size:15px;color:var(--fg);">{l.name}</span>
+              </div>
+              <span class="chip" style="background:var(--V10);color:var(--V);border:1px solid rgba(167,139,250,0.2);">{l.level}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+    </div>
+
+
+    <!-- ── REFERENCES ─────────────────────── -->
+    <section aria-labelledby="ref-h">
+      <div class="flex items-center gap-4 mb-10">
+        <h2 id="ref-h" class="reveal font-display" style="font-size:clamp(20px,2.5vw,28px);font-weight:700;letter-spacing:-0.02em;color:var(--fg);">
+          {d.cv.references}
+        </h2>
+        <div style="flex:1;height:1px;background:var(--ln);"></div>
+      </div>
+
+      <p class="reveal" style="font-size:13px;color:var(--fg2);margin-bottom:16px;font-style:italic;">{d.references.label}</p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {d.references.items.map((ref) => (
+          <div
+            class="reveal glow-card rounded-2xl p-5"
+            style="background:var(--bg3);border:1px solid var(--ln);"
+          >
+            <!-- Avatar initials -->
+            <div
+              style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--A10),var(--V10));border:1px solid var(--ln);display:flex;align-items:center;justify-content:center;margin-bottom:14px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;color:var(--A);"
+            >
+              {ref.name.split(' ').map((n: string) => n[0]).slice(0, 2).join('')}
+            </div>
+
+            <p class="font-display" style="font-weight:700;font-size:14px;color:var(--fg);margin-bottom:3px;">{ref.name}</p>
+            <p style="font-size:12.5px;color:var(--fg2);margin-bottom:2px;">{ref.position}</p>
+            <p style="font-size:12px;color:var(--fg2);opacity:0.65;margin-bottom:12px;">{ref.company}</p>
+            <a
+              href={`mailto:${ref.email}`}
+              style="display:inline-flex;align-items:center;gap:5px;font-size:11.5px;color:var(--A);font-family:'JetBrains Mono',monospace;"
+              class="hover:opacity-75 transition-opacity"
+            >
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/>
+              </svg>
+              {ref.email}
+            </a>
+          </div>
+        ))}
+      </div>
+    </section>
+
+
+    <!-- ── BACK LINK ─────────────────────── -->
+    <div class="flex justify-between items-center pt-4" style="border-top:1px solid var(--ln);">
+      <a
+        href={`/${lang}/`}
+        style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--fg2);"
+        class="hover:text-[var(--A)] transition-colors"
+      >
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/>
+        </svg>
+        {lang === 'es' ? 'Volver al inicio' : 'Back to home'}
+      </a>
+      <a
+        href="/cv/patricio-parra-galia-cv.pdf"
+        download
+        style="display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--A);"
+        class="hover:opacity-75 transition-opacity"
+      >
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/>
+        </svg>
+        {d.cv.download}
+      </a>
+    </div>
+
+  </div>
+</div>
+
+</Base>
+
+<!-- Print styles -->
+<style is:global>
+  @media print {
+    #site-header, footer, .no-print { display: none !important; }
+    body { background: white !important; color: #060C18 !important; }
+    .glow-card { box-shadow: none !important; border: 1px solid #e2e8f0 !important; }
+    a { color: inherit !important; text-decoration: none !important; }
+  }
+</style>
+
+<script>
+  const observer = new IntersectionObserver(
+    (entries) => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('is-visible'); }),
+    { threshold: 0.06, rootMargin: '0px 0px -30px 0px' }
+  );
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>

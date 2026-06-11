@@ -134,13 +134,87 @@ export const es = {
   },
   cv: {
     title:          'Trayectoria profesional',
+    subtitle:       'Historial completo, certificaciones y habilidades técnicas',
     download:       'Descargar CV (PDF)',
+    print:          'Imprimir',
     experience:     'Experiencia',
     education:      'Educación',
-    skills:         'Habilidades',
+    skills:         'Habilidades técnicas',
     certifications: 'Certificaciones',
+    languages:      'Idiomas',
     references:     'Referencias',
     present:        'Actualidad',
+    current_role:   'Actual',
+    contact_label:  'Contacto',
+    profile_label:  'Perfil',
+  },
+  education: {
+    items: [
+      {
+        degree:   'Ingeniería en Telecomunicaciones, Conectividad y Redes',
+        school:   'Instituto Profesional INACAP',
+        location: 'Santiago, Chile',
+        year:     '2014',
+        duration: '4 años · Nivel técnico superior',
+      },
+      {
+        degree:   'Certificado en Gestión Aplicada de Proyectos',
+        school:   'Instituto Profesional INACAP',
+        location: 'Santiago, Chile',
+        year:     '2015',
+        duration: '1 año · Nivel técnico superior',
+      },
+      {
+        degree:   'Certificado ITIL® Foundation en Gestión de Servicios de TI',
+        school:   'Netsolution Learning',
+        location: 'Santiago, Chile',
+        year:     '2018',
+        duration: '20 horas',
+      },
+    ],
+  },
+  certifications: {
+    items: [
+      {
+        name:   'ITIL® Foundation Certificate',
+        full:   'ITIL® Foundation Certificate in IT Service Management',
+        issuer: 'Netsolution Learning',
+        year:   '2018',
+      },
+      {
+        name:   'Gestión Aplicada de Proyectos',
+        full:   'Certificado en Gestión Aplicada de Proyectos',
+        issuer: 'Instituto Profesional INACAP',
+        year:   '2015',
+      },
+    ],
+  },
+  languages_spoken: [
+    { name: 'Español', level: 'Nativo' },
+    { name: 'Inglés', level: 'Profesional' },
+  ],
+  references: {
+    label: 'Disponibles bajo solicitud. Listadas según CV.',
+    items: [
+      {
+        name:     'Jose Márquez',
+        position: 'IT Manager',
+        company:  'Laboratorio Biosano S.A.',
+        email:    'jmarquez@biosano.cl',
+      },
+      {
+        name:     'Patricio Cisterna',
+        position: 'IT Manager',
+        company:  'ACFCAPITAL S.A.',
+        email:    'pcisterna@acfcapital.cl',
+      },
+      {
+        name:     'Pawel Gogacz',
+        position: 'IT Manager',
+        company:  'Radial Europe',
+        email:    'pgogacz@radial.com',
+      },
+    ],
   },
   shop: {
     title:       'Tienda',
