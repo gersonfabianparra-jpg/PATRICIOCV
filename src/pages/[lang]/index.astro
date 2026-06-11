@@ -1,7 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { useTranslations } from '../../i18n/utils';
-import { languages } from '../../i18n/utils';
+import { useTranslations, languages } from '../../i18n/utils';
 import { en } from '../../i18n/en';
 import { es } from '../../i18n/es';
 import type { Lang } from '../../i18n/utils';
@@ -12,15 +11,6 @@ export function getStaticPaths() {
 
 const { lang } = Astro.params as { lang: Lang };
 const dict = lang === 'en' ? en : es;
-const t = useTranslations(lang);
-
-// Skill icons as inline SVG paths
-const skillIcons: Record<string, string> = {
-  network:  'M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18',
-  server:   'M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01',
-  cloud:    'M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z',
-  endpoint: 'M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
-};
 ---
 
 <Base
@@ -29,324 +19,450 @@ const skillIcons: Record<string, string> = {
   lang={lang}
 >
 
-  <!-- ═══════════════════ HERO ═══════════════════ -->
-  <section class="relative min-h-screen bg-navy flex items-center overflow-hidden" aria-label="Hero">
-    <!-- Grid pattern -->
-    <div class="absolute inset-0 hero-grid opacity-100" aria-hidden="true"></div>
-    <!-- Cobalt glow -->
-    <div class="absolute inset-0 hero-glow" aria-hidden="true"></div>
-    <!-- Bottom fade to surface -->
-    <div class="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-t from-surface dark:from-dark to-transparent" aria-hidden="true"></div>
+<!-- ═══════════════════════════════════════════
+     HERO — Full dark, nombre enorme
+════════════════════════════════════════════ -->
+<section
+  class="relative min-h-screen flex items-center overflow-hidden noise"
+  style="background:#060C18;"
+  aria-label="Hero"
+>
+  <!-- Grid background lines -->
+  <div class="absolute inset-0 grid-lines" aria-hidden="true"></div>
+  <!-- Color blobs -->
+  <div class="absolute inset-0" aria-hidden="true">
+    <div style="position:absolute;top:-15%;right:-5%;width:700px;height:700px;background:radial-gradient(circle,rgba(45,212,191,0.11) 0%,transparent 65%);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:-20%;left:-8%;width:600px;height:600px;background:radial-gradient(circle,rgba(167,139,250,0.08) 0%,transparent 65%);pointer-events:none;"></div>
+  </div>
+  <!-- Gradient fade bottom -->
+  <div class="absolute bottom-0 inset-x-0 h-48 pointer-events-none" style="background:linear-gradient(to bottom,transparent,#060C18);" aria-hidden="true"></div>
 
-    <div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-32 w-full">
-      <div class="max-w-2xl">
+  <div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-32 w-full">
 
-        <!-- Location badge -->
-        <div class="fade-up inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/15 bg-white/5 text-white/70 text-xs font-mono mb-8">
-          <svg class="w-3 h-3 text-cobalt-light shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-            <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
-          </svg>
-          {dict.hero.badge}
+    <!-- Eyebrow -->
+    <div class="reveal flex items-center gap-3 mb-7">
+      <div style="width:28px;height:1px;background:var(--A);flex-shrink:0;"></div>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.2em;color:var(--A);text-transform:uppercase;">
+        Groningen, Netherlands &nbsp;·&nbsp; {lang === 'es' ? 'Disponible' : 'Available'}
+      </span>
+    </div>
+
+    <!-- Name — enormous -->
+    <h1 class="reveal reveal-2 font-display" style="line-height:0.92;letter-spacing:-0.035em;font-weight:800;">
+      <span style="display:block;font-size:clamp(48px,7.5vw,96px);color:rgba(230,240,255,0.95);">Patricio Fabián</span>
+      <span style="display:block;font-size:clamp(48px,7.5vw,96px);color:var(--A);">Parra Galia</span>
+    </h1>
+
+    <!-- Horizontal rule + role -->
+    <div class="reveal reveal-3 flex items-center gap-4 my-7">
+      <div style="height:1px;width:36px;background:rgba(120,180,255,0.2);flex-shrink:0;"></div>
+      <p style="font-size:clamp(14px,1.8vw,17px);color:rgba(91,122,158,0.9);font-weight:500;letter-spacing:0.01em;">
+        {dict.hero.title_line1} {dict.hero.title_line2}&nbsp;·&nbsp;{dict.hero.title_accent}
+      </p>
+    </div>
+
+    <!-- Tagline -->
+    <p class="reveal reveal-3" style="color:rgba(91,122,158,0.7);font-size:15px;line-height:1.8;max-width:500px;">
+      {dict.hero.subtitle}
+    </p>
+
+    <!-- CTAs -->
+    <div class="reveal reveal-4 flex flex-wrap gap-3 mt-9">
+      <a
+        href={`/${lang}/cv`}
+        style="background:var(--A);color:#060C18;font-weight:700;font-size:13.5px;padding:11px 22px;border-radius:8px;display:inline-flex;align-items:center;gap:8px;transition:opacity 0.2s;box-shadow:0 0 28px rgba(45,212,191,0.25);"
+        class="hover:opacity-90"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        {dict.hero.cta_primary}
+      </a>
+      <a
+        href={`/${lang}/wyse`}
+        style="border:1px solid rgba(167,139,250,0.4);color:var(--V);font-weight:600;font-size:13.5px;padding:11px 22px;border-radius:8px;display:inline-flex;align-items:center;gap:8px;transition:all 0.2s;"
+        class="hover:bg-[rgba(167,139,250,0.08)] hover:border-[var(--V)]"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        {dict.hero.cta_wyse}
+      </a>
+    </div>
+
+    <!-- Tech badges row -->
+    <div class="reveal reveal-4 flex flex-wrap items-center gap-2 mt-8">
+      {['ITIL® Foundation', 'Dell WMS', 'Fortinet', 'VMware', 'AWS'].map(b => (
+        <span
+          class="chip"
+          style="background:rgba(120,180,255,0.05);color:rgba(91,122,158,0.7);border:1px solid rgba(120,180,255,0.1);"
+        >{b}</span>
+      ))}
+    </div>
+
+  </div>
+
+  <!-- Scroll hint -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2" style="color:rgba(91,122,158,0.35);" aria-hidden="true">
+    <div style="width:1px;height:40px;background:linear-gradient(to bottom,transparent,rgba(91,122,158,0.3))"></div>
+    <svg class="w-3.5 h-3.5 animate-bounce" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     STATS — números en ámbar, monospace
+════════════════════════════════════════════ -->
+<section style="background:var(--bg2);border-bottom:1px solid var(--ln);" aria-label="Key metrics">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10">
+    <dl class="grid grid-cols-2 md:grid-cols-4">
+      {dict.stats.map((s, i) => (
+        <div
+          class="reveal flex flex-col items-center py-6 text-center"
+          style={`border-right:${i < 3 ? '1px solid var(--ln)' : 'none'};`}
+        >
+          <dt class="num" style="font-size:clamp(26px,4vw,40px);letter-spacing:-0.04em;">{s.value}</dt>
+          <dd style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--fg2);margin-top:6px;">{s.label}</dd>
         </div>
+      ))}
+    </dl>
+  </div>
+</section>
 
-        <!-- Name & title -->
-        <h1 class="fade-up-2 font-display font-bold leading-tight tracking-tight text-white">
-          <span class="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl">Patricio Fabián</span>
-          <span class="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl">
-            <span class="text-cobalt-light">Parra</span> Galia
-          </span>
-        </h1>
 
-        <!-- Role -->
-        <p class="fade-up-2 mt-5 text-base sm:text-lg text-white/65 font-medium">
-          {dict.hero.title_line1} {dict.hero.title_line2} {dict.hero.title_accent}
+<!-- ═══════════════════════════════════════════
+     ABOUT — perfil + mini timeline
+════════════════════════════════════════════ -->
+<section style="background:var(--bg);padding:96px 0;" aria-labelledby="about-h">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+
+      <!-- Left: text -->
+      <div>
+        <span class="reveal chip" style="background:var(--A10);color:var(--A);border:1px solid var(--A20);margin-bottom:18px;display:inline-flex;">
+          {lang === 'es' ? '// perfil_profesional' : '// professional_profile'}
+        </span>
+        <h2 id="about-h" class="reveal font-display" style="font-size:clamp(26px,3.5vw,40px);font-weight:700;letter-spacing:-0.025em;color:var(--fg);line-height:1.15;margin-bottom:20px;">
+          {dict.about.title}
+        </h2>
+        <p class="reveal" style="font-size:15px;line-height:1.85;color:var(--fg2);max-width:460px;">
+          {dict.about.text}
         </p>
-
-        <!-- Tagline -->
-        <p class="fade-up-3 mt-4 text-sm sm:text-base text-white/50 leading-relaxed max-w-xl">
-          {dict.hero.subtitle}
-        </p>
-
-        <!-- CTAs -->
-        <div class="fade-up-3 mt-9 flex flex-wrap gap-3">
-          <a
-            href={`/${lang}/cv`}
-            class="inline-flex items-center gap-2 bg-cobalt hover:bg-cobalt-dim text-white px-5 py-2.5 rounded-lg text-sm font-semibold transition-colors shadow-lg shadow-cobalt/25"
-          >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-            </svg>
-            {dict.hero.cta_primary}
-          </a>
-          <a
-            href={`/${lang}/wyse`}
-            class="inline-flex items-center gap-2 border border-cobalt-light/40 text-cobalt-light hover:bg-cobalt/15 px-5 py-2.5 rounded-lg text-sm font-semibold transition-colors"
-          >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-            </svg>
-            {dict.hero.cta_wyse}
-          </a>
+        <div class="reveal flex flex-wrap gap-2 mt-6">
+          {dict.about.badges.map(b => (
+            <span class="chip" style="background:var(--bg2);color:var(--fg2);border:1px solid var(--ln);">{b}</span>
+          ))}
         </div>
-
       </div>
-    </div>
 
-    <!-- Scroll indicator -->
-    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-white/25 text-[10px] font-mono" aria-hidden="true">
-      <span>{dict.hero.scroll}</span>
-      <svg class="w-4 h-4 animate-bounce" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
-      </svg>
-    </div>
-  </section>
-
-
-  <!-- ═══════════════════ STATS ═══════════════════ -->
-  <section class="bg-surface dark:bg-dark border-b border-edge dark:border-dark-edge" aria-label="Key stats">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10">
-      <dl class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-0 md:divide-x md:divide-edge dark:md:divide-dark-edge">
-        {dict.stats.map((stat) => (
-          <div class="flex flex-col items-center md:px-8 text-center gap-1">
-            <dt class="font-display font-bold text-3xl sm:text-4xl text-cobalt dark:text-cobalt-light tracking-tight">
-              {stat.value}
-            </dt>
-            <dd class="text-xs text-ink-muted dark:text-dark-muted font-medium uppercase tracking-wider mt-1">
-              {stat.label}
-            </dd>
+      <!-- Right: experience timeline (top 3) -->
+      <div class="space-y-3">
+        {dict.experience.items.slice(0, 3).map((item, i) => (
+          <div
+            class="reveal glow-card rounded-xl p-5 flex gap-4"
+            style={`background:var(--bg3);border:1px solid var(--ln);`}
+          >
+            <div class="flex flex-col items-center pt-1 gap-1 shrink-0">
+              <div style={`width:8px;height:8px;border-radius:50%;flex-shrink:0;background:${i === 0 ? 'var(--G)' : 'rgba(91,122,158,0.3)'};${i === 0 ? 'box-shadow:0 0 8px var(--G)' : ''}`}></div>
+              {i < 2 && <div style="width:1px;flex:1;min-height:24px;background:var(--ln);"></div>}
+            </div>
+            <div class="min-w-0">
+              <div class="flex items-start justify-between gap-2">
+                <p style="font-weight:600;font-size:13.5px;color:var(--fg);line-height:1.3;">{item.role}</p>
+                {i === 0 && (
+                  <span class="chip shrink-0" style="background:rgba(52,211,153,0.1);color:var(--G);border:1px solid rgba(52,211,153,0.2);">
+                    {lang === 'es' ? 'Actual' : 'Current'}
+                  </span>
+                )}
+              </div>
+              <p style="font-size:12px;color:var(--fg2);margin-top:3px;">{item.company} · {item.country}</p>
+              <p class="font-mono" style="font-size:11px;color:var(--A);margin-top:5px;">{item.period}</p>
+            </div>
           </div>
         ))}
-      </dl>
+        <a
+          href={`/${lang}/cv`}
+          style="display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--A);margin-top:8px;padding:2px 0;"
+          class="hover:opacity-75 transition-opacity"
+        >
+          {lang === 'es' ? 'Ver trayectoria completa' : 'View full career'}
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+        </a>
+      </div>
+
     </div>
-  </section>
+  </div>
+</section>
 
 
-  <!-- ═══════════════════ ABOUT ═══════════════════ -->
-  <section class="bg-surface-2 dark:bg-dark-2 py-20" aria-labelledby="about-title">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+<!-- ═══════════════════════════════════════════
+     DELL WMS — sección núcleo, violeta, diagrama SVG
+════════════════════════════════════════════ -->
+<section
+  class="relative overflow-hidden clip-diagonal-top clip-diagonal-bottom"
+  style="background:linear-gradient(135deg,#0D0520 0%,#110729 40%,#0A0518 100%);padding:100px 0;"
+  aria-labelledby="wyse-h"
+>
+  <!-- Violet glow blobs -->
+  <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+    <div style="position:absolute;top:-10%;left:-5%;width:600px;height:600px;background:radial-gradient(circle,rgba(167,139,250,0.15) 0%,transparent 65%);"></div>
+    <div style="position:absolute;bottom:-10%;right:-5%;width:500px;height:500px;background:radial-gradient(circle,rgba(45,212,191,0.07) 0%,transparent 65%);"></div>
+  </div>
+  <div class="absolute inset-0 grid-lines opacity-50" style="background-image:linear-gradient(rgba(167,139,250,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(167,139,250,0.05) 1px,transparent 1px);background-size:64px 64px;" aria-hidden="true"></div>
 
-        <div>
-          <p class="chip bg-cobalt-faint dark:bg-cobalt/10 text-cobalt dark:text-cobalt-light mb-4">
-            {lang === 'es' ? 'Sobre mí' : 'About'}
+  <div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+
+      <!-- Text -->
+      <div>
+        <span class="reveal chip" style="background:rgba(167,139,250,0.12);color:#A78BFA;border:1px solid rgba(167,139,250,0.25);margin-bottom:20px;display:inline-flex;">
+          {dict.wyse_cta.badge}
+        </span>
+        <h2 id="wyse-h" class="reveal font-display" style="font-size:clamp(28px,4vw,52px);font-weight:800;letter-spacing:-0.03em;color:rgba(230,240,255,0.95);line-height:1.05;margin-bottom:12px;">
+          Dell Wyse<br/>
+          <span style="color:#A78BFA;">Management Suite</span>
+        </h2>
+        <p class="reveal" style="font-size:14.5px;color:rgba(167,139,250,0.75);font-weight:500;margin-bottom:16px;">
+          {dict.wyse_cta.subtitle}
+        </p>
+        <p class="reveal" style="font-size:14px;line-height:1.8;color:rgba(91,122,158,0.8);max-width:440px;margin-bottom:28px;">
+          {dict.wyse_cta.desc}
+        </p>
+
+        <!-- Features -->
+        <ul class="reveal space-y-2.5 mb-10">
+          {dict.wyse_cta.features.map(feat => (
+            <li class="flex items-start gap-3">
+              <div style="width:16px;height:16px;border-radius:50%;background:rgba(167,139,250,0.15);border:1px solid rgba(167,139,250,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+                <svg class="w-2 h-2" fill="none" stroke="#A78BFA" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              </div>
+              <span style="font-size:13.5px;color:rgba(230,240,255,0.65);">{feat}</span>
+            </li>
+          ))}
+        </ul>
+
+        <a
+          href={`/${lang}/wyse`}
+          style="background:linear-gradient(135deg,#7C3AED,#A78BFA);color:#fff;font-weight:700;font-size:13.5px;padding:12px 24px;border-radius:8px;display:inline-flex;align-items:center;gap:8px;box-shadow:0 0 32px rgba(167,139,250,0.3);transition:opacity 0.2s;"
+          class="hover:opacity-90"
+        >
+          {dict.wyse_cta.button}
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+        </a>
+      </div>
+
+      <!-- SVG Architecture Diagram -->
+      <div class="reveal reveal-2 flex justify-center">
+        <div
+          style="background:rgba(15,7,40,0.7);border:1px solid rgba(167,139,250,0.2);border-radius:16px;padding:28px;width:100%;max-width:420px;backdrop-filter:blur(12px);"
+        >
+          <p class="font-mono" style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(167,139,250,0.5);margin-bottom:16px;text-align:center;">
+            WMS Topology
           </p>
-          <h2 id="about-title" class="font-display font-bold text-2xl sm:text-3xl text-ink dark:text-dark-ink mb-5">
-            {dict.about.title}
-          </h2>
-          <p class="text-base text-ink-muted dark:text-dark-muted leading-relaxed">
-            {dict.about.text}
-          </p>
-          <div class="flex flex-wrap gap-2 mt-6">
-            {dict.about.badges.map((badge) => (
-              <span class="chip bg-surface dark:bg-dark-3 text-ink-muted dark:text-dark-muted border border-edge dark:border-dark-edge">
-                {badge}
-              </span>
+          <svg viewBox="0 0 380 280" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full" aria-label="WMS architecture diagram">
+            <!-- WMS Server -->
+            <rect x="115" y="8" width="150" height="52" rx="8" fill="rgba(167,139,250,0.12)" stroke="rgba(167,139,250,0.45)" stroke-width="1"/>
+            <text x="190" y="29" text-anchor="middle" fill="rgba(230,240,255,0.9)" font-family="JetBrains Mono, monospace" font-size="9.5" font-weight="600" letter-spacing="0.05em">WMS SERVER</text>
+            <text x="190" y="47" text-anchor="middle" fill="rgba(167,139,250,0.65)" font-family="JetBrains Mono, monospace" font-size="8">Central Management</text>
+
+            <!-- Vertical line down -->
+            <line x1="190" y1="60" x2="190" y2="98" stroke="rgba(167,139,250,0.35)" stroke-width="1" stroke-dasharray="4 3"/>
+            <circle cx="190" cy="62" r="2.5" fill="rgba(167,139,250,0.5)"/>
+
+            <!-- Switch / Hub -->
+            <rect x="140" y="98" width="100" height="40" rx="6" fill="rgba(45,212,191,0.1)" stroke="rgba(45,212,191,0.45)" stroke-width="1"/>
+            <text x="190" y="116" text-anchor="middle" fill="rgba(230,240,255,0.85)" font-family="JetBrains Mono, monospace" font-size="8.5" font-weight="600">NETWORK</text>
+            <text x="190" y="130" text-anchor="middle" fill="rgba(45,212,191,0.7)" font-family="JetBrains Mono, monospace" font-size="7.5">Switch / Hub</text>
+
+            <!-- Lines to clients -->
+            <line x1="165" y1="138" x2="55" y2="188" stroke="rgba(45,212,191,0.25)" stroke-width="1" stroke-dasharray="5 3"/>
+            <line x1="190" y1="138" x2="190" y2="188" stroke="rgba(45,212,191,0.25)" stroke-width="1" stroke-dasharray="5 3"/>
+            <line x1="215" y1="138" x2="325" y2="188" stroke="rgba(45,212,191,0.25)" stroke-width="1" stroke-dasharray="5 3"/>
+
+            <!-- Thin Client 1 -->
+            <rect x="8" y="188" width="95" height="50" rx="6" fill="rgba(15,30,54,0.6)" stroke="rgba(120,180,255,0.2)" stroke-width="1"/>
+            <text x="55" y="207" text-anchor="middle" fill="rgba(230,240,255,0.75)" font-family="JetBrains Mono, monospace" font-size="7.5" font-weight="600">THIN CLIENT</text>
+            <text x="55" y="220" text-anchor="middle" fill="rgba(91,122,158,0.6)" font-family="JetBrains Mono, monospace" font-size="7">Wyse 3040</text>
+            <circle cx="48" cy="231" r="3" fill="rgba(52,211,153,0.7)"/>
+            <text x="56" y="234" fill="rgba(52,211,153,0.65)" font-family="JetBrains Mono, monospace" font-size="6.5">Online</text>
+
+            <!-- Thin Client 2 -->
+            <rect x="143" y="188" width="95" height="50" rx="6" fill="rgba(15,30,54,0.6)" stroke="rgba(120,180,255,0.2)" stroke-width="1"/>
+            <text x="190" y="207" text-anchor="middle" fill="rgba(230,240,255,0.75)" font-family="JetBrains Mono, monospace" font-size="7.5" font-weight="600">THIN CLIENT</text>
+            <text x="190" y="220" text-anchor="middle" fill="rgba(91,122,158,0.6)" font-family="JetBrains Mono, monospace" font-size="7">Wyse 5070</text>
+            <circle cx="183" cy="231" r="3" fill="rgba(52,211,153,0.7)"/>
+            <text x="191" y="234" fill="rgba(52,211,153,0.65)" font-family="JetBrains Mono, monospace" font-size="6.5">Online</text>
+
+            <!-- Thin Client 3 -->
+            <rect x="278" y="188" width="95" height="50" rx="6" fill="rgba(15,30,54,0.6)" stroke="rgba(120,180,255,0.2)" stroke-width="1"/>
+            <text x="325" y="207" text-anchor="middle" fill="rgba(230,240,255,0.75)" font-family="JetBrains Mono, monospace" font-size="7.5" font-weight="600">THIN CLIENT</text>
+            <text x="325" y="220" text-anchor="middle" fill="rgba(91,122,158,0.6)" font-family="JetBrains Mono, monospace" font-size="7">Wyse 7070</text>
+            <circle cx="318" cy="231" r="3" fill="rgba(52,211,153,0.7)"/>
+            <text x="326" y="234" fill="rgba(52,211,153,0.65)" font-family="JetBrains Mono, monospace" font-size="6.5">Online</text>
+
+            <!-- VDI Backend bottom -->
+            <rect x="115" y="252" width="150" height="26" rx="5" fill="rgba(167,139,250,0.07)" stroke="rgba(167,139,250,0.25)" stroke-width="1" stroke-dasharray="4 2"/>
+            <text x="190" y="269" text-anchor="middle" fill="rgba(167,139,250,0.5)" font-family="JetBrains Mono, monospace" font-size="8">VDI Backend</text>
+
+            <!-- Vertical dashed up from VDI to switch -->
+            <line x1="190" y1="252" x2="190" y2="238" stroke="rgba(167,139,250,0.2)" stroke-width="1" stroke-dasharray="3 3"/>
+          </svg>
+
+          <!-- Legend -->
+          <div class="flex items-center justify-center gap-5 mt-4">
+            <div class="flex items-center gap-1.5">
+              <div style="width:8px;height:8px;border-radius:50%;background:rgba(52,211,153,0.7);"></div>
+              <span class="font-mono" style="font-size:9px;color:rgba(91,122,158,0.6);">{lang === 'es' ? 'Conectado' : 'Connected'}</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <div style="width:8px;height:1px;background:rgba(45,212,191,0.4);"></div>
+              <span class="font-mono" style="font-size:9px;color:rgba(91,122,158,0.6);">{lang === 'es' ? 'Red gestionada' : 'Managed network'}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     SKILLS — lista editorial numerada
+════════════════════════════════════════════ -->
+<section style="background:var(--bg);padding:96px 0;" aria-labelledby="skills-h">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6">
+
+    <div class="mb-14">
+      <span class="reveal chip" style="background:var(--A10);color:var(--A);border:1px solid var(--A20);margin-bottom:14px;display:inline-flex;">
+        {lang === 'es' ? '// stack_técnico' : '// technical_stack'}
+      </span>
+      <h2 id="skills-h" class="reveal font-display" style="font-size:clamp(26px,3.5vw,40px);font-weight:700;letter-spacing:-0.025em;color:var(--fg);line-height:1.15;">
+        {dict.skills.title}
+      </h2>
+    </div>
+
+    <!-- Editorial numbered rows -->
+    <div style="border-top:1px solid var(--ln);">
+      {dict.skills.items.map((skill, i) => (
+        <div
+          class="reveal group"
+          style="border-bottom:1px solid var(--ln);padding:28px 0;display:grid;grid-template-columns:56px 1fr auto;gap:20px;align-items:start;transition:background 0.2s;cursor:default;"
+        >
+          <!-- Index number -->
+          <div class="num" style="font-size:13px;padding-top:2px;opacity:0.5;">
+            0{i + 1}
+          </div>
+
+          <!-- Content -->
+          <div>
+            <p style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;color:var(--fg);margin-bottom:6px;letter-spacing:-0.01em;">
+              {skill.title}
+            </p>
+            <p style="font-size:13.5px;line-height:1.75;color:var(--fg2);max-width:520px;">
+              {skill.desc}
+            </p>
+          </div>
+
+          <!-- Tags -->
+          <div class="flex flex-wrap gap-1.5 justify-end max-w-[220px]">
+            {skill.tags.map(tag => (
+              <span class="chip" style="background:var(--bg2);color:var(--fg2);border:1px solid var(--ln);">{tag}</span>
             ))}
           </div>
         </div>
-
-        <!-- Experience quick timeline -->
-        <div class="space-y-4">
-          {dict.experience.items.slice(0, 3).map((item, i) => (
-            <div class:list={['flex gap-4 p-4 rounded-xl bg-surface dark:bg-dark-3 border border-edge dark:border-dark-edge', i === 0 ? 'ring-1 ring-cobalt/30' : '']}>
-              <div class="shrink-0 mt-0.5">
-                <div class:list={['w-2.5 h-2.5 rounded-full mt-1', i === 0 ? 'bg-cobalt' : 'bg-ink-muted/30 dark:bg-dark-muted/30']}></div>
-              </div>
-              <div class="min-w-0">
-                <p class="text-sm font-semibold text-ink dark:text-dark-ink leading-snug">{item.role}</p>
-                <p class="text-xs text-ink-muted dark:text-dark-muted mt-0.5">{item.company} · {item.country}</p>
-                <p class="text-[11px] font-mono text-cobalt dark:text-cobalt-light mt-1">{item.period}</p>
-              </div>
-            </div>
-          ))}
-          <a
-            href={`/${lang}/cv`}
-            class="inline-flex items-center gap-1.5 text-sm font-medium text-cobalt dark:text-cobalt-light hover:underline mt-2"
-          >
-            {lang === 'es' ? 'Ver trayectoria completa' : 'View full career'}
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
-            </svg>
-          </a>
-        </div>
-
-      </div>
+      ))}
     </div>
-  </section>
+
+  </div>
+</section>
 
 
-  <!-- ═══════════════════ DELL WMS — CORE CTA ═══════════════════ -->
-  <section class="bg-navy relative overflow-hidden py-20" aria-labelledby="wyse-title">
-    <div class="absolute inset-0 hero-grid opacity-60" aria-hidden="true"></div>
-    <div class="absolute inset-0 hero-glow" aria-hidden="true"></div>
+<!-- ═══════════════════════════════════════════
+     EXPLORE — 3 tarjetas editoriales
+════════════════════════════════════════════ -->
+<section style="background:var(--bg2);padding:96px 0;border-top:1px solid var(--ln);" aria-labelledby="explore-h">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6">
 
-    <div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-
-        <!-- Text -->
-        <div>
-          <span class="chip bg-cobalt/20 text-cobalt-light border border-cobalt/30 mb-5 inline-flex">
-            {dict.wyse_cta.badge}
-          </span>
-          <h2 id="wyse-title" class="font-display font-bold text-2xl sm:text-3xl text-white mb-4 leading-tight">
-            {dict.wyse_cta.title}
-          </h2>
-          <p class="text-base text-cobalt-light/80 font-medium mb-4">{dict.wyse_cta.subtitle}</p>
-          <p class="text-sm text-white/55 leading-relaxed mb-8">{dict.wyse_cta.desc}</p>
-          <a
-            href={`/${lang}/wyse`}
-            class="inline-flex items-center gap-2 bg-cobalt hover:bg-cobalt-light text-white px-6 py-3 rounded-lg text-sm font-semibold transition-colors shadow-lg shadow-cobalt/30"
-          >
-            {dict.wyse_cta.button}
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
-            </svg>
-          </a>
-        </div>
-
-        <!-- Feature list -->
-        <div class="bg-white/5 border border-white/10 rounded-2xl p-6 space-y-3">
-          {dict.wyse_cta.features.map((feat) => (
-            <div class="flex items-start gap-3">
-              <div class="w-5 h-5 bg-cobalt/30 rounded-full flex items-center justify-center shrink-0 mt-0.5">
-                <svg class="w-2.5 h-2.5 text-cobalt-light" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-                </svg>
-              </div>
-              <span class="text-sm text-white/70">{feat}</span>
-            </div>
-          ))}
-          <!-- Diagram preview hint -->
-          <div class="mt-5 pt-5 border-t border-white/10 flex items-center gap-2 text-xs text-white/35 font-mono">
-            <svg class="w-4 h-4 text-cobalt-light/50" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5"/>
-            </svg>
-            {lang === 'es' ? 'Incluye diagramas interactivos de arquitectura' : 'Includes interactive architecture diagrams'}
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-
-  <!-- ═══════════════════ SKILLS GRID ═══════════════════ -->
-  <section class="bg-surface dark:bg-dark py-20" aria-labelledby="skills-title">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6">
-
-      <div class="text-center mb-12">
-        <h2 id="skills-title" class="font-display font-bold text-2xl sm:text-3xl text-ink dark:text-dark-ink mb-3">
-          {dict.skills.title}
-        </h2>
-        <p class="text-sm text-ink-muted dark:text-dark-muted max-w-xl mx-auto">
-          {dict.skills.subtitle}
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        {dict.skills.items.map((skill) => (
-          <div class="group p-6 rounded-2xl bg-surface-2 dark:bg-dark-2 border border-edge dark:border-dark-edge hover:border-cobalt/40 dark:hover:border-cobalt/40 hover:shadow-md transition-all duration-200">
-            <div class="flex items-start gap-4 mb-4">
-              <div class="w-10 h-10 bg-cobalt-faint dark:bg-cobalt/10 rounded-xl flex items-center justify-center shrink-0 group-hover:bg-cobalt group-hover:text-white transition-colors duration-200">
-                <svg class="w-5 h-5 text-cobalt dark:text-cobalt-light group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" d={skillIcons[skill.icon]}/>
-                </svg>
-              </div>
-              <div>
-                <h3 class="font-display font-semibold text-sm text-ink dark:text-dark-ink">{skill.title}</h3>
-              </div>
-            </div>
-            <p class="text-sm text-ink-muted dark:text-dark-muted leading-relaxed mb-4">{skill.desc}</p>
-            <div class="flex flex-wrap gap-1.5">
-              {skill.tags.map((tag) => (
-                <span class="chip bg-surface dark:bg-dark-3 text-ink-muted dark:text-dark-muted border border-edge dark:border-dark-edge">
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-
-    </div>
-  </section>
-
-
-  <!-- ═══════════════════ EXPLORE ═══════════════════ -->
-  <section class="bg-surface-2 dark:bg-dark-2 py-20" aria-labelledby="explore-title">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6">
-
-      <div class="text-center mb-10">
-        <h2 id="explore-title" class="font-display font-bold text-2xl sm:text-3xl text-ink dark:text-dark-ink mb-2">
+    <div class="flex items-end justify-between mb-12 flex-wrap gap-4">
+      <div>
+        <span class="reveal chip" style="background:var(--A10);color:var(--A);border:1px solid var(--A20);margin-bottom:12px;display:inline-flex;">
+          {lang === 'es' ? '// navegar' : '// navigate'}
+        </span>
+        <h2 id="explore-h" class="reveal font-display" style="font-size:clamp(24px,3vw,36px);font-weight:700;letter-spacing:-0.025em;color:var(--fg);">
           {dict.sections.explore_title}
         </h2>
-        <p class="text-sm text-ink-muted dark:text-dark-muted">{dict.sections.explore_subtitle}</p>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
-
-        <!-- CV card -->
-        <a
-          href={`/${lang}/cv`}
-          class="group p-6 rounded-2xl bg-surface dark:bg-dark border border-edge dark:border-dark-edge hover:border-cobalt/40 dark:hover:border-cobalt/40 hover:shadow-md transition-all duration-200 flex flex-col"
-        >
-          <div class="w-10 h-10 bg-cobalt-faint dark:bg-cobalt/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-cobalt transition-colors duration-200">
-            <svg class="w-5 h-5 text-cobalt dark:text-cobalt-light group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-            </svg>
-          </div>
-          <h3 class="font-display font-semibold text-sm text-ink dark:text-dark-ink mb-2">{dict.nav.cv}</h3>
-          <p class="text-xs text-ink-muted dark:text-dark-muted leading-relaxed flex-1">{dict.sections.cv_card_desc}</p>
-          <div class="flex items-center gap-1 mt-4 text-xs font-medium text-cobalt dark:text-cobalt-light group-hover:gap-2 transition-all">
-            {lang === 'es' ? 'Ver trayectoria' : 'View career'}
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
-            </svg>
-          </div>
-        </a>
-
-        <!-- Blog card -->
-        <a
-          href={`/${lang}/blog`}
-          class="group p-6 rounded-2xl bg-surface dark:bg-dark border border-edge dark:border-dark-edge hover:border-cobalt/40 dark:hover:border-cobalt/40 hover:shadow-md transition-all duration-200 flex flex-col"
-        >
-          <div class="w-10 h-10 bg-cobalt-faint dark:bg-cobalt/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-cobalt transition-colors duration-200">
-            <svg class="w-5 h-5 text-cobalt dark:text-cobalt-light group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
-            </svg>
-          </div>
-          <h3 class="font-display font-semibold text-sm text-ink dark:text-dark-ink mb-2">{dict.nav.blog}</h3>
-          <p class="text-xs text-ink-muted dark:text-dark-muted leading-relaxed flex-1">{dict.sections.blog_card_desc}</p>
-          <div class="flex items-center gap-1 mt-4 text-xs font-medium text-cobalt dark:text-cobalt-light group-hover:gap-2 transition-all">
-            {lang === 'es' ? 'Explorar blog' : 'Explore blog'}
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
-            </svg>
-          </div>
-        </a>
-
-        <!-- Shop card -->
-        <a
-          href={`/${lang}/shop`}
-          class="group p-6 rounded-2xl bg-surface dark:bg-dark border border-edge dark:border-dark-edge hover:border-cobalt/40 dark:hover:border-cobalt/40 hover:shadow-md transition-all duration-200 flex flex-col"
-        >
-          <div class="w-10 h-10 bg-cobalt-faint dark:bg-cobalt/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-cobalt transition-colors duration-200">
-            <svg class="w-5 h-5 text-cobalt dark:text-cobalt-light group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
-            </svg>
-          </div>
-          <h3 class="font-display font-semibold text-sm text-ink dark:text-dark-ink mb-2">{dict.nav.shop}</h3>
-          <p class="text-xs text-ink-muted dark:text-dark-muted leading-relaxed flex-1">{dict.sections.shop_card_desc}</p>
-          <div class="flex items-center gap-1 mt-4 text-xs font-medium text-cobalt dark:text-cobalt-light group-hover:gap-2 transition-all">
-            {lang === 'es' ? 'Ver tienda' : 'Visit shop'}
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
-            </svg>
-          </div>
-        </a>
-
       </div>
     </div>
-  </section>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+
+      <!-- CV card -->
+      <a
+        href={`/${lang}/cv`}
+        class="reveal glow-card group flex flex-col rounded-2xl p-7"
+        style="background:var(--bg3);border:1px solid var(--ln);text-decoration:none;"
+      >
+        <div style="display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:10px;background:var(--A10);margin-bottom:20px;transition:background 0.2s;"
+          class="group-hover:bg-[var(--A20)]">
+          <svg class="w-5 h-5" style="color:var(--A);" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+          </svg>
+        </div>
+        <p style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;color:var(--fg);margin-bottom:8px;letter-spacing:-0.01em;">{dict.nav.cv}</p>
+        <p style="font-size:13.5px;line-height:1.7;color:var(--fg2);flex:1;">{dict.sections.cv_card_desc}</p>
+        <div style="display:flex;align-items:center;gap:5px;margin-top:20px;font-size:12.5px;font-weight:600;color:var(--A);" class="group-hover:gap-3 transition-all">
+          {lang === 'es' ? 'Ver trayectoria' : 'View career'}
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+        </div>
+      </a>
+
+      <!-- Blog card -->
+      <a
+        href={`/${lang}/blog`}
+        class="reveal reveal-2 glow-card group flex flex-col rounded-2xl p-7"
+        style="background:var(--bg3);border:1px solid var(--ln);text-decoration:none;"
+      >
+        <div style="display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:10px;background:var(--A10);margin-bottom:20px;transition:background 0.2s;"
+          class="group-hover:bg-[var(--A20)]">
+          <svg class="w-5 h-5" style="color:var(--A);" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+          </svg>
+        </div>
+        <p style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;color:var(--fg);margin-bottom:8px;letter-spacing:-0.01em;">{dict.nav.blog}</p>
+        <p style="font-size:13.5px;line-height:1.7;color:var(--fg2);flex:1;">{dict.sections.blog_card_desc}</p>
+        <div style="display:flex;align-items:center;gap:5px;margin-top:20px;font-size:12.5px;font-weight:600;color:var(--A);" class="group-hover:gap-3 transition-all">
+          {lang === 'es' ? 'Explorar blog' : 'Explore blog'}
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+        </div>
+      </a>
+
+      <!-- Shop card -->
+      <a
+        href={`/${lang}/shop`}
+        class="reveal reveal-3 glow-card group flex flex-col rounded-2xl p-7"
+        style="background:var(--bg3);border:1px solid var(--ln);text-decoration:none;"
+      >
+        <div style="display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:10px;background:var(--V10);margin-bottom:20px;transition:background 0.2s;">
+          <svg class="w-5 h-5" style="color:var(--V);" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+          </svg>
+        </div>
+        <p style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;color:var(--fg);margin-bottom:8px;letter-spacing:-0.01em;">{dict.nav.shop}</p>
+        <p style="font-size:13.5px;line-height:1.7;color:var(--fg2);flex:1;">{dict.sections.shop_card_desc}</p>
+        <div style="display:flex;align-items:center;gap:5px;margin-top:20px;font-size:12.5px;font-weight:600;color:var(--V);" class="group-hover:gap-3 transition-all">
+          {lang === 'es' ? 'Ver tienda' : 'Visit shop'}
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
 
 </Base>
+
+<!-- Scroll reveal observer -->
+<script>
+  const observer = new IntersectionObserver(
+    (entries) => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('is-visible'); }),
+    { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+  );
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
