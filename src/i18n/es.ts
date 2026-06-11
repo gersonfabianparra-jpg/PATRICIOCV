@@ -131,6 +131,13 @@ export const es = {
     coming_soon:  'Próximamente — primeros artículos en preparación.',
     read_more:    'Leer artículo',
     all_articles: 'Ver todos los artículos',
+    filter_all:   'Todos',
+    min_read:     'min de lectura',
+    published:    'Publicado',
+    back:         '← Volver al Blog',
+    no_posts:     'No hay artículos con esta etiqueta.',
+    toc:          'En este artículo',
+    share:        'Compartir',
   },
   cv: {
     title:          'Trayectoria profesional',

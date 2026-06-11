@@ -1,0 +1,108 @@
+---
+title: "Dell Wyse Management Suite: Guía de inicio rápido para entornos VDI"
+description: "Aprende a desplegar y configurar Dell WMS desde cero. Instalación del servidor, registro de Thin Clients y creación de políticas de grupo en menos de una hora."
+pubDate: 2025-11-10
+tags: ["Dell WMS", "VDI", "Thin Clients", "Guía práctica"]
+lang: "es"
+draft: false
+---
+
+Dell Wyse Management Suite (WMS) es la plataforma centralizada de Dell Technologies para administrar flotas de Thin Clients, dispositivos ThinOS y entornos VDI. En este artículo te guío paso a paso desde la instalación del servidor hasta el primer registro de un dispositivo.
+
+## ¿Qué es Dell WMS y por qué importa?
+
+Cuando gestionas 50, 200 o 2.000 Thin Clients distribuidos en múltiples ubicaciones, necesitas una solución que te permita actualizar firmware, aplicar configuraciones y diagnosticar problemas **sin mover un dedo en cada equipo**. WMS hace exactamente eso.
+
+La arquitectura es sencilla:
+
+- **WMS Server**: puede ser on-premise (Windows Server) o en la nube pública
+- **Agente ThinOS**: integrado en los Thin Clients Dell, se conecta al servidor vía HTTPS
+- **Consola Web**: interfaz de administración centralizada
+
+## Requisitos previos
+
+| Componente | Mínimo | Recomendado |
+|---|---|---|
+| OS Servidor | Windows Server 2016 | Windows Server 2019/2022 |
+| RAM | 8 GB | 16 GB |
+| Disco | 100 GB HDD | 200 GB SSD |
+| Red | 100 Mbps | 1 Gbps |
+| Base de datos | MariaDB 10.x | MariaDB 10.6 LTS |
+
+> **Nota de campo**: En mi experiencia en Radial Netherlands, desplegamos WMS en un servidor virtual con 12 GB de RAM gestionando 340 Thin Clients en 6 países europeos sin ningún problema de rendimiento.
+
+## Paso 1: Instalación del servidor WMS
+
+Descarga el instalador desde el portal oficial de Dell (requiere cuenta de soporte). La instalación es asistida por wizard:
+
+```powershell
+# Verifica que .NET Framework 4.8 esté instalado
+Get-WindowsFeature NET-Framework-45-Features
+
+# Abre los puertos requeridos en Windows Firewall
+netsh advfirewall firewall add rule name="WMS HTTPS" dir=in action=allow protocol=TCP localport=443
+netsh advfirewall firewall add rule name="WMS MQTT" dir=in action=allow protocol=TCP localport=1883
+```
+
+Sigue el wizard de instalación. Cuando te pida credenciales de MariaDB, usa un usuario dedicado con permisos mínimos, no `root`.
+
+## Paso 2: Configuración DNS y certificado SSL
+
+Los Thin Clients necesitan resolver el nombre FQDN del servidor WMS. Agrega un registro A en tu DNS interno:
+
+```
+wms.tuempresa.local → 192.168.10.50
+```
+
+Para el certificado, tienes dos opciones:
+1. **Certificado de tu CA interna** (recomendado en producción) — necesitas distribuir el certificado raíz a los Thin Clients
+2. **Certificado autofirmado** — válido para laboratorio o piloto, pero los dispositivos mostrarán advertencias
+
+## Paso 3: Registro del primer Thin Client
+
+En el Thin Client (ThinOS 9.x), navega a:
+
+**System Setup → Management → WMS**
+
+Ingresa:
+- **WMS Server**: `wms.tuempresa.local` (o la IP)
+- **Group Token**: el token de tu grupo (lo encuentras en WMS Console → Groups)
+
+El dispositivo reiniciará sus agentes y aparecerá en la consola bajo **Devices → Unmanaged** en segundos.
+
+## Paso 4: Crear tu primera política de grupo
+
+Las políticas en WMS son la clave de la gestión centralizada. Desde la consola:
+
+1. Ve a **Groups** → crea un grupo `Produccion-NL`
+2. En el grupo, selecciona **Edit Policies**
+3. Configura el broker de conexión (Citrix, VMware Horizon, Microsoft RDS)
+4. Aplica configuración de pantallas, periféricos y red
+5. Activa **Auto Push** para que los dispositivos reciban la configuración al conectarse
+
+```json
+// Ejemplo de policy snippet para Citrix StoreFront
+{
+  "ConnectionBroker": "Citrix",
+  "StoreFrontURL": "https://storefront.tuempresa.com",
+  "AutoLaunch": true,
+  "DefaultResource": "Desktop"
+}
+```
+
+## Troubleshooting: los 3 problemas más comunes
+
+**1. El Thin Client no aparece en la consola**
+Verifica que el puerto 443 y 1883 estén abiertos entre el segmento del dispositivo y el servidor WMS. Un `telnet wms.tuempresa.local 443` desde un PC del mismo segmento te confirmará conectividad.
+
+**2. La política no se aplica**
+Comprueba que el dispositivo esté en el grupo correcto y que **Auto Push** esté activo. En la pestaña **Devices** puedes forzar una sincronización manual con **Send Policy**.
+
+**3. El firmware no actualiza**
+El servidor WMS necesita acceso al repositorio de Dell para descargar imágenes de firmware. Si tienes proxy, configúralo en **Admin → Server Settings → Proxy**.
+
+## Conclusión
+
+Con menos de 2 horas de trabajo tienes un entorno WMS funcional. En futuros artículos cubriré la configuración avanzada de perfiles ThinOS, la integración con Active Directory y estrategias de despliegue masivo para flotas de más de 500 dispositivos.
+
+¿Tienes preguntas sobre tu despliegue específico? Puedes [contactarme directamente](/es/#contact) — este es precisamente el tipo de proyecto en el que trabajo como consultor independiente.

@@ -179,3 +179,89 @@ html.dark {
   transition: background-size 0.25s ease;
 }
 .link-u:hover { background-size: 100% 1px; }
+
+/* ─── Prose / Blog article typography ─── */
+.prose {
+  color: var(--fg);
+  font-size: 1.0625rem;
+  line-height: 1.85;
+}
+.prose h1, .prose h2, .prose h3, .prose h4 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  color: var(--fg);
+  line-height: 1.25;
+  margin-top: 2em;
+  margin-bottom: 0.75em;
+}
+.prose h2 {
+  font-size: clamp(1.375rem, 2.5vw, 1.75rem);
+  border-bottom: 1px solid var(--ln);
+  padding-bottom: 0.4em;
+}
+.prose h3 { font-size: clamp(1.125rem, 2vw, 1.375rem); }
+.prose h4 { font-size: 1rem; letter-spacing: 0.03em; text-transform: uppercase; color: var(--fg2); }
+.prose p { margin-bottom: 1.5em; }
+.prose a { color: var(--A); text-decoration: underline; text-underline-offset: 3px; transition: opacity 0.15s; }
+.prose a:hover { opacity: 0.75; }
+.prose strong { font-weight: 700; color: var(--fg); }
+.prose em { font-style: italic; color: var(--fg2); }
+
+.prose code:not(pre code) {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85em;
+  color: var(--A);
+  background: var(--bg2);
+  border: 1px solid var(--ln);
+  padding: 0.15em 0.45em;
+  border-radius: 4px;
+}
+.prose pre {
+  background: #0d1117;
+  border: 1px solid var(--ln);
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  overflow-x: auto;
+  margin-bottom: 1.75em;
+  font-size: 0.875rem;
+  line-height: 1.65;
+}
+.prose pre code { background: transparent; border: none; padding: 0; color: inherit; }
+.prose blockquote {
+  border-left: 3px solid var(--A);
+  padding-left: 1.25rem;
+  margin: 1.75em 0;
+  color: var(--fg2);
+  font-style: italic;
+}
+.prose ul, .prose ol { margin-bottom: 1.5em; padding-left: 1.5rem; }
+.prose ul > li {
+  list-style: none;
+  position: relative;
+  padding-left: 1.25rem;
+  margin-bottom: 0.55em;
+}
+.prose ul > li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--A);
+  font-size: 0.75em;
+  top: 0.28em;
+}
+.prose ol > li { list-style: decimal; margin-bottom: 0.55em; }
+.prose ol > li::marker { color: var(--N); font-family: 'JetBrains Mono', monospace; font-weight: 700; }
+.prose table { width: 100%; border-collapse: collapse; margin-bottom: 1.5em; font-size: 0.9rem; }
+.prose th {
+  background: var(--bg2);
+  color: var(--fg);
+  font-weight: 700;
+  text-align: left;
+  padding: 0.65em 0.9em;
+  border-bottom: 2px solid var(--ln);
+  font-family: 'Space Grotesk', sans-serif;
+}
+.prose td { padding: 0.55em 0.9em; border-bottom: 1px solid var(--ln); color: var(--fg2); }
+.prose tr:hover td { background: var(--bg2); }
+.prose hr { border: none; border-top: 1px solid var(--ln); margin: 2.5em 0; }
+.prose img { border-radius: 8px; max-width: 100%; height: auto; margin: 1.5em 0; border: 1px solid var(--ln); }

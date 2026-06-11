@@ -1,0 +1,195 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import { useTranslations } from '../../../i18n/utils';
+import type { Lang } from '../../../i18n/utils';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', p => !p.data.draft);
+  return posts.map(post => ({
+    params: { lang: post.data.lang, slug: post.id },
+    props: { post },
+  }));
+}
+
+const { lang } = Astro.params as { lang: Lang };
+const { post } = Astro.props;
+const t = useTranslations(lang);
+
+const { Content } = await render(post);
+
+function readingTime(text: string): number {
+  return Math.max(1, Math.round(text.split(/\s+/).length / 200));
+}
+
+function formatDate(date: Date, lang: Lang): string {
+  return date.toLocaleDateString(lang === 'es' ? 'es-NL' : 'en-NL', {
+    day: 'numeric', month: 'long', year: 'numeric',
+  });
+}
+
+const mins = readingTime(post.body ?? '');
+const dateStr = formatDate(post.data.pubDate, lang);
+---
+
+<Base
+  title={`${post.data.title} — Patricio Parra Galia`}
+  description={post.data.description}
+  lang={lang}
+>
+  <!-- ─── Article Hero ─── -->
+  <header
+    class="relative pt-32 pb-16 overflow-hidden"
+    style="background: #060C18;"
+  >
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div
+        class="absolute top-0 left-0 w-[600px] h-[400px] opacity-10"
+        style="background: radial-gradient(ellipse at 20% 30%, var(--A), transparent 65%); filter: blur(80px);"
+      ></div>
+    </div>
+
+    <div class="relative z-10 max-w-3xl mx-auto px-6">
+      <!-- Back link -->
+      <a
+        href={`/${lang}/blog/`}
+        class="inline-flex items-center gap-2 text-sm font-medium mb-8 transition-colors"
+        style="color: var(--fg2);"
+        onmouseover="this.style.color='var(--A)'" onmouseout="this.style.color='var(--fg2)'"
+      >
+        {t('blog.back')}
+      </a>
+
+      <!-- Tags -->
+      <div class="flex flex-wrap gap-2 mb-5">
+        {post.data.tags.map(tag => (
+          <span
+            class="text-xs font-mono px-2.5 py-1 rounded-full"
+            style="background: color-mix(in srgb, var(--A) 12%, transparent); color: var(--A); border: 1px solid color-mix(in srgb, var(--A) 25%, transparent);"
+          >
+            {tag}
+          </span>
+        ))}
+      </div>
+
+      <!-- Title -->
+      <h1
+        class="font-display font-extrabold leading-tight mb-6"
+        style="font-size: clamp(1.75rem, 4vw, 2.75rem); color: var(--fg);"
+      >
+        {post.data.title}
+      </h1>
+
+      <!-- Meta row -->
+      <div class="flex flex-wrap items-center gap-4 text-sm" style="color: var(--fg2);">
+        <span class="flex items-center gap-1.5">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          <time datetime={post.data.pubDate.toISOString()}>{dateStr}</time>
+        </span>
+        <span class="flex items-center gap-1.5 font-mono" style="color: var(--N);">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+          {mins} {t('blog.min_read')}
+        </span>
+        <span>Patricio Parra Galia</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ─── Divider ─── -->
+  <div class="h-px max-w-3xl mx-auto" style="background: linear-gradient(90deg, transparent, var(--A), transparent);"></div>
+
+  <!-- ─── Article Content ─── -->
+  <article class="max-w-3xl mx-auto px-6 py-14">
+    <div class="prose">
+      <Content />
+    </div>
+
+    <!-- Footer nav -->
+    <footer class="mt-16 pt-8 border-t flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4" style="border-color: var(--ln);">
+      <a
+        href={`/${lang}/blog/`}
+        class="inline-flex items-center gap-2 text-sm font-semibold transition-colors"
+        style="color: var(--fg2);"
+        onmouseover="this.style.color='var(--A)'" onmouseout="this.style.color='var(--fg2)'"
+      >
+        {t('blog.back')}
+      </a>
+
+      <div class="flex items-center gap-3">
+        <span class="text-sm" style="color: var(--fg2);">{t('blog.share')}:</span>
+        <a
+          href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.data.title)}&url=${encodeURIComponent(Astro.url.href)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-sm font-semibold transition-colors"
+          style="color: var(--A);"
+          onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'"
+          aria-label="Share on X/Twitter"
+        >
+          X / Twitter
+        </a>
+        <a
+          href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(Astro.url.href)}&title=${encodeURIComponent(post.data.title)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-sm font-semibold transition-colors"
+          style="color: var(--A);"
+          onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'"
+          aria-label="Share on LinkedIn"
+        >
+          LinkedIn
+        </a>
+      </div>
+    </footer>
+  </article>
+
+  <!-- ─── Author Card ─── -->
+  <section class="max-w-3xl mx-auto px-6 pb-20">
+    <div
+      class="rounded-2xl border p-6 flex gap-5 items-start"
+      style="background: var(--bg2); border-color: var(--ln);"
+    >
+      <div
+        class="shrink-0 w-14 h-14 rounded-full flex items-center justify-center font-display font-bold text-lg"
+        style="background: linear-gradient(135deg, var(--A), var(--V)); color: #fff;"
+        aria-hidden="true"
+      >
+        PP
+      </div>
+      <div>
+        <p class="font-display font-bold mb-1" style="color: var(--fg);">Patricio Fabián Parra Galia</p>
+        <p class="text-sm mb-3" style="color: var(--fg2);">
+          {lang === 'es'
+            ? 'Ingeniero en Telecomunicaciones e Infraestructura IT. 15+ años en Europa y Latinoamérica. Especialista Dell WMS.'
+            : 'Telecommunications & IT Infrastructure Engineer. 15+ years across Europe and Latin America. Dell WMS specialist.'}
+        </p>
+        <div class="flex gap-3">
+          <a
+            href={`/${lang}/cv/`}
+            class="text-xs font-semibold px-3 py-1.5 rounded-full border transition-colors"
+            style="border-color: var(--A); color: var(--A);"
+            onmouseover="this.style.background='color-mix(in srgb, var(--A) 12%, transparent)'" onmouseout="this.style.background='transparent'"
+          >
+            {lang === 'es' ? 'Ver trayectoria' : 'View career'}
+          </a>
+          <a
+            href={`/${lang}/wyse/`}
+            class="text-xs font-semibold px-3 py-1.5 rounded-full border transition-colors"
+            style="border-color: var(--V); color: var(--V);"
+            onmouseover="this.style.background='color-mix(in srgb, var(--V) 12%, transparent)'" onmouseout="this.style.background='transparent'"
+          >
+            Dell WMS
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

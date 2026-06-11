@@ -1,0 +1,91 @@
+---
+title: "Fortinet vs Cisco Meraki: Field Notes from 6 European Deployments"
+description: "An honest comparison of two enterprise firewall platforms based on real deployments in Netherlands, Belgium, Germany, Poland, Italy, and the UK — from an IT admin who has managed both."
+pubDate: 2026-01-15
+tags: ["Fortinet", "Cisco Meraki", "Network Security", "Firewall", "Enterprise IT"]
+lang: "en"
+draft: false
+---
+
+I've deployed and managed both Fortinet FortiGate and Cisco Meraki MX across six European countries during my time as IT Administrator at Radial Netherlands. This isn't a spec-sheet comparison — it's field notes from someone who has configured both at 2 AM when production was down.
+
+## The Quick Verdict
+
+- **Choose Fortinet** if you need deep security features, granular control, and your team has network engineers who can handle complexity
+- **Choose Cisco Meraki** if you need rapid deployment, centralized cloud management, and you're prioritizing operational simplicity over raw capability
+
+Both are solid. The choice depends on your team and use case, not on which vendor has better marketing.
+
+## Deployment Experience
+
+### Fortinet FortiGate
+
+Fortinet's CLI is powerful and consistent. Once you know the `config system interface / edit / next / end` pattern, you can build virtually any configuration. The GUI has improved significantly in FortiOS 7.x, but real admins still do most work in the CLI.
+
+```bash
+# Create a site-to-site IPsec VPN (simplified)
+config vpn ipsec phase1-interface
+    edit "NL-to-DE-VPN"
+        set interface "wan1"
+        set peertype any
+        set net-device disable
+        set proposal aes256-sha256
+        set dhgrp 14
+        set remote-gw 203.0.113.50
+        set psksecret [REDACTED]
+    next
+end
+```
+
+**What I loved**: FortiOS policy-based routing, the security fabric integration, and SD-WAN capabilities that come built-in. At Radial, we used FortiGate for the Netherlands hub — it handled 1.2 Gbps of production traffic with SSL inspection enabled without breaking a sweat.
+
+**What I didn't love**: Licensing is a maze. FortiGuard subscriptions, FortiCare, unified threat protection bundles — you need a spreadsheet just to track what's active on which device. Renewals can surprise you.
+
+### Cisco Meraki MX
+
+Meraki's promise is "configure everything from a browser, no CLI needed." That promise holds 80% of the time. The dashboard is genuinely excellent for deploying across multiple sites from a single pane of glass.
+
+**What I loved**: Meraki's auto-VPN is magic. Adding a new site to the hub-and-spoke topology takes 15 minutes — you just register the device, enable VPN, and it builds the tunnels automatically. We used this to onboard the Italy warehouse in a single afternoon.
+
+**What I didn't love**: When something breaks, you're trapped in the dashboard. No SSH into the device, no packet capture (well, limited), no raw logs. You're dependent on Meraki's cloud. If the dashboard has an outage, your visibility drops to near zero even if traffic is flowing fine.
+
+## Feature Comparison
+
+| Feature | Fortinet | Meraki |
+|---|---|---|
+| SSL/TLS Inspection | Full, deep | Basic |
+| SD-WAN | Native, advanced | Basic (SD-WAN+) |
+| Auto-VPN | Manual config | One-click |
+| CLI Access | Full | None (by design) |
+| Packet capture | Full tcpdump | Limited, cloud-based |
+| Logging | Local + cloud | Cloud only |
+| Pricing model | Perpetual + subscriptions | Subscription only |
+| Learning curve | High | Low |
+
+## The Cloud Dependency Question
+
+Meraki's biggest architectural risk is that management requires cloud connectivity. The devices *work* without it (traffic flows), but you lose visibility and can't change configurations. In a DR scenario, this matters.
+
+Fortinet is fully on-premise capable. Your FortiManager can run in your own datacenter, and the firewall operates independently of any cloud.
+
+> At one point during the Radial Belgium deployment, Meraki's cloud had a 45-minute degraded service window. Traffic kept flowing, but we couldn't push a policy change we needed urgently. We had to wait. That never happens with Fortinet.
+
+## Total Cost of Ownership
+
+For a 10-site deployment over 5 years:
+
+**Cisco Meraki**: Higher upfront cost per device + mandatory cloud subscription. Predictable OPEX model, but expensive if you let licenses lapse (devices go into a "can't change config" state).
+
+**Fortinet**: Lower hardware cost, but you need skilled engineers to configure and maintain it. If you're outsourcing network management, Fortinet's complexity can make that more expensive.
+
+## My Recommendation
+
+**For a distributed retail/logistics company** (like Radial's model): Meraki for branch sites (easy management, auto-VPN), Fortinet at the datacenter/hub (power and security depth). This hybrid is what we ran in production.
+
+**For a security-conscious enterprise**: Fortinet end-to-end. The Security Fabric, ZTNA capabilities, and FortiEDR integration are hard to match.
+
+**For a small team managing 5+ sites with limited network expertise**: Meraki. The operational simplicity will save you more than the feature gap costs you.
+
+---
+
+Questions about network design for your European operations? [Get in touch](/en/#contact) — I've been there, and I'm happy to share what works.

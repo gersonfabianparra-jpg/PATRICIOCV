@@ -1,0 +1,230 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import { useTranslations, languages } from '../../../i18n/utils';
+import type { Lang } from '../../../i18n/utils';
+
+export async function getStaticPaths() {
+  return Object.keys(languages).map(lang => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: Lang };
+const t = useTranslations(lang);
+
+const allPosts = await getCollection('blog', p => p.data.lang === lang && !p.data.draft);
+const posts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const allTags = [...new Set(posts.flatMap(p => p.data.tags))].sort();
+
+function readingTime(text: string): number {
+  return Math.max(1, Math.round(text.split(/\s+/).length / 200));
+}
+
+function formatDate(date: Date, lang: Lang): string {
+  return date.toLocaleDateString(lang === 'es' ? 'es-NL' : 'en-NL', {
+    day: 'numeric', month: 'long', year: 'numeric',
+  });
+}
+---
+
+<Base
+  title={`${t('blog.title')} — Patricio Parra Galia`}
+  description={t('blog.subtitle')}
+  lang={lang}
+>
+  <!-- ─── Hero ─── -->
+  <section
+    class="relative pt-32 pb-20 overflow-hidden"
+    style="background: #060C18;"
+  >
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div class="absolute top-0 left-1/4 w-[500px] h-[500px] rounded-full opacity-10"
+        style="background: radial-gradient(circle, var(--A), transparent 70%); filter: blur(80px);"></div>
+      <div class="absolute bottom-0 right-1/4 w-[350px] h-[350px] rounded-full opacity-8"
+        style="background: radial-gradient(circle, var(--V), transparent 70%); filter: blur(60px);"></div>
+    </div>
+
+    <div class="relative z-10 max-w-5xl mx-auto px-6">
+      <a
+        href={`/${lang}/`}
+        class="inline-flex items-center gap-2 text-sm font-medium mb-8 transition-colors"
+        style="color: var(--fg2);"
+        onmouseover="this.style.color='var(--A)'" onmouseout="this.style.color='var(--fg2)'"
+      >
+        ← {lang === 'es' ? 'Inicio' : 'Home'}
+      </a>
+
+      <div class="chip mb-5" style="color: var(--A); border-color: color-mix(in srgb, var(--A) 30%, transparent);">
+        {lang === 'es' ? 'Artículos técnicos' : 'Technical articles'}
+      </div>
+
+      <h1
+        class="font-display font-extrabold leading-tight mb-5"
+        style="font-size: clamp(2.25rem, 5vw, 3.5rem); color: var(--fg);"
+      >
+        {t('blog.title')}
+      </h1>
+      <p class="max-w-2xl" style="font-size: 1.125rem; color: var(--fg2); line-height: 1.7;">
+        {t('blog.subtitle')}
+      </p>
+    </div>
+  </section>
+
+  <!-- ─── Tag Filter ─── -->
+  {posts.length > 0 && (
+    <section
+      class="sticky top-[64px] z-30 border-b"
+      style="background: color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter: blur(12px); border-color: var(--ln);"
+    >
+      <div class="max-w-5xl mx-auto px-6 py-3 flex gap-2 flex-wrap items-center">
+        <span class="text-xs font-mono uppercase tracking-widest mr-1" style="color: var(--fg2);">
+          {t('blog.filter_all')}:
+        </span>
+        <button
+          class="tag-btn active text-xs font-medium px-3 py-1.5 rounded-full border transition-all cursor-pointer"
+          data-tag="all"
+          style="border-color: var(--A); color: var(--A); background: color-mix(in srgb, var(--A) 15%, transparent);"
+        >
+          {t('blog.filter_all')}
+        </button>
+        {allTags.map(tag => (
+          <button
+            class="tag-btn text-xs font-medium px-3 py-1.5 rounded-full border transition-all cursor-pointer"
+            data-tag={tag}
+            style="border-color: var(--ln); color: var(--fg2); background: transparent;"
+          >
+            {tag}
+          </button>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <!-- ─── Post Grid ─── -->
+  <section class="max-w-5xl mx-auto px-6 py-16">
+    {posts.length === 0 ? (
+      <p class="text-center py-20" style="color: var(--fg2);">{t('blog.coming_soon')}</p>
+    ) : (
+      <>
+        <p id="no-results" class="hidden text-center py-10" style="color: var(--fg2);">
+          {t('blog.no_posts')}
+        </p>
+
+        <div class="grid gap-6 sm:grid-cols-2" id="posts-grid">
+          {posts.map(post => {
+            const mins = readingTime(post.body ?? '');
+            const dateStr = formatDate(post.data.pubDate, lang);
+            return (
+              <article
+                class="post-card glow-card group flex flex-col rounded-2xl border overflow-hidden transition-all duration-300"
+                data-tags={post.data.tags.join(',')}
+                style="background: var(--bg2); border-color: var(--ln);"
+              >
+                <!-- Card header accent -->
+                <div class="h-1 w-full" style="background: linear-gradient(90deg, var(--A), var(--V));"></div>
+
+                <div class="flex flex-col flex-1 p-6">
+                  <!-- Tags -->
+                  <div class="flex flex-wrap gap-1.5 mb-4">
+                    {post.data.tags.slice(0, 3).map(tag => (
+                      <span
+                        class="text-xs font-mono px-2 py-0.5 rounded-full"
+                        style="background: color-mix(in srgb, var(--A) 12%, transparent); color: var(--A); border: 1px solid color-mix(in srgb, var(--A) 25%, transparent);"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+
+                  <!-- Title -->
+                  <h2 class="font-display font-bold mb-3 leading-snug flex-1 group-hover:text-[var(--A)] transition-colors"
+                    style="font-size: clamp(1.05rem, 1.5vw, 1.25rem); color: var(--fg);">
+                    <a href={`/${lang}/blog/${post.id}/`} class="stretched-link">
+                      {post.data.title}
+                    </a>
+                  </h2>
+
+                  <!-- Description -->
+                  <p class="text-sm mb-5 line-clamp-3 leading-relaxed" style="color: var(--fg2);">
+                    {post.data.description}
+                  </p>
+
+                  <!-- Footer -->
+                  <div class="flex items-center justify-between mt-auto pt-4 border-t" style="border-color: var(--ln);">
+                    <div class="flex items-center gap-3">
+                      <time
+                        datetime={post.data.pubDate.toISOString()}
+                        class="text-xs font-mono"
+                        style="color: var(--fg2);"
+                      >
+                        {dateStr}
+                      </time>
+                      <span class="text-xs font-mono" style="color: var(--N);">
+                        {mins} {t('blog.min_read')}
+                      </span>
+                    </div>
+                    <span
+                      class="text-xs font-semibold transition-colors"
+                      style="color: var(--A);"
+                    >
+                      {t('blog.read_more')} →
+                    </span>
+                  </div>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </>
+    )}
+  </section>
+</Base>
+
+<style>
+  .stretched-link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+  .post-card { position: relative; }
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('.tag-btn');
+  const cards = document.querySelectorAll<HTMLElement>('.post-card');
+  const noResults = document.getElementById('no-results');
+
+  function setActive(btn: HTMLButtonElement) {
+    buttons.forEach(b => {
+      b.style.borderColor = 'var(--ln)';
+      b.style.color = 'var(--fg2)';
+      b.style.background = 'transparent';
+    });
+    btn.style.borderColor = 'var(--A)';
+    btn.style.color = 'var(--A)';
+    btn.style.background = 'color-mix(in srgb, var(--A) 15%, transparent)';
+  }
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tag = btn.dataset.tag!;
+      setActive(btn);
+
+      let visible = 0;
+      cards.forEach(card => {
+        const cardTags = (card.dataset.tags ?? '').split(',');
+        const show = tag === 'all' || cardTags.includes(tag);
+        card.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+
+      if (noResults) noResults.classList.toggle('hidden', visible > 0);
+    });
+  });
+</script>

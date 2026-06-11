@@ -131,6 +131,13 @@ export const en = {
     coming_soon:  'Coming soon — first articles in preparation.',
     read_more:    'Read article',
     all_articles: 'View all articles',
+    filter_all:   'All',
+    min_read:     'min read',
+    published:    'Published',
+    back:         '← Back to Blog',
+    no_posts:     'No posts found for this tag.',
+    toc:          'In this article',
+    share:        'Share',
   },
   cv: {
     title:          'Professional career',
