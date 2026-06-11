@@ -1,0 +1,135 @@
+---
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import ThemeToggle from './ThemeToggle.astro';
+import { useTranslations, getAlternateUrl } from '../i18n/utils';
+import type { Lang } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const alternateUrl = getAlternateUrl(Astro.url);
+const path = Astro.url.pathname;
+
+const navLinks = [
+  { href: `/${lang}/`,     label: t('nav.home'),  exact: true  },
+  { href: `/${lang}/cv`,   label: t('nav.cv'),    exact: false },
+  { href: `/${lang}/blog`, label: t('nav.blog'),  exact: false },
+  { href: `/${lang}/wyse`, label: t('nav.wyse'),  exact: false, highlight: true },
+  { href: `/${lang}/shop`, label: t('nav.shop'),  exact: false },
+];
+
+function isActive(href: string, exact: boolean) {
+  return exact ? path === href : path.startsWith(href);
+}
+---
+
+<header
+  id="site-header"
+  class="sticky top-0 z-50 bg-surface/90 dark:bg-dark/90 backdrop-blur-md border-b border-edge dark:border-dark-edge transition-colors"
+>
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+
+    <!-- Logo -->
+    <a
+      href={`/${lang}/`}
+      class="flex items-center gap-2.5 shrink-0 group"
+      aria-label="Patricio Parra Galia — Home"
+    >
+      <div class="w-9 h-9 bg-cobalt group-hover:bg-cobalt-dim rounded-lg flex items-center justify-center text-white font-display font-bold text-sm leading-none transition-colors select-none">
+        PPG
+      </div>
+      <div class="hidden sm:block leading-tight">
+        <p class="font-display font-semibold text-sm text-ink dark:text-dark-ink">Patricio Parra Galia</p>
+        <p class="text-[11px] text-ink-muted dark:text-dark-muted">IT Infrastructure Engineer</p>
+      </div>
+    </a>
+
+    <!-- Desktop nav -->
+    <nav class="hidden md:flex items-center gap-0.5" aria-label="Main navigation">
+      {navLinks.map(({ href, label, exact, highlight }) => (
+        <a
+          href={href}
+          class:list={[
+            'px-3 py-1.5 rounded-md text-sm transition-colors',
+            highlight
+              ? 'font-semibold text-cobalt dark:text-cobalt-light hover:bg-cobalt-faint dark:hover:bg-cobalt/10'
+              : 'font-medium text-ink-muted dark:text-dark-muted hover:text-ink dark:hover:text-dark-ink hover:bg-surface-2 dark:hover:bg-dark-2',
+            isActive(href, exact) && !highlight
+              ? 'text-ink dark:text-dark-ink bg-surface-2 dark:bg-dark-2'
+              : '',
+          ]}
+          aria-current={isActive(href, exact) ? 'page' : undefined}
+        >
+          {label}
+          {highlight && (
+            <span class="ml-1 chip bg-cobalt/10 dark:bg-cobalt/20 text-cobalt dark:text-cobalt-light">
+              PRO
+            </span>
+          )}
+        </a>
+      ))}
+    </nav>
+
+    <!-- Controls -->
+    <div class="flex items-center gap-2 shrink-0">
+      <LanguageSwitcher lang={lang} alternateUrl={alternateUrl} />
+      <ThemeToggle />
+
+      <!-- Mobile toggle -->
+      <button
+        id="mobile-menu-btn"
+        class="md:hidden p-2 rounded-lg text-ink-muted dark:text-dark-muted hover:bg-surface-2 dark:hover:bg-dark-2 hover:text-ink dark:hover:text-dark-ink transition-colors"
+        aria-label={t('nav.menu_open')}
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <svg id="icon-ham" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+        <svg id="icon-x" class="w-5 h-5 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div
+    id="mobile-menu"
+    class="hidden md:hidden border-t border-edge dark:border-dark-edge bg-surface dark:bg-dark"
+  >
+    <nav class="max-w-6xl mx-auto px-4 py-3 flex flex-col gap-1" aria-label="Mobile navigation">
+      {navLinks.map(({ href, label, exact, highlight }) => (
+        <a
+          href={href}
+          class:list={[
+            'px-4 py-2.5 rounded-lg text-sm font-medium transition-colors',
+            highlight
+              ? 'text-cobalt dark:text-cobalt-light'
+              : 'text-ink dark:text-dark-ink hover:bg-surface-2 dark:hover:bg-dark-2',
+            isActive(href, exact) ? 'bg-surface-2 dark:bg-dark-2' : '',
+          ]}
+        >
+          {label}
+        </a>
+      ))}
+    </nav>
+  </div>
+</header>
+
+<script>
+  const btn   = document.getElementById('mobile-menu-btn');
+  const menu  = document.getElementById('mobile-menu');
+  const ham   = document.getElementById('icon-ham');
+  const xIcon = document.getElementById('icon-x');
+
+  btn?.addEventListener('click', () => {
+    const hidden = menu?.classList.toggle('hidden');
+    btn.setAttribute('aria-expanded', String(!hidden));
+    ham?.classList.toggle('hidden', !hidden);
+    xIcon?.classList.toggle('hidden', !!hidden);
+  });
+</script>

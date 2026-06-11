@@ -1,0 +1,39 @@
+---
+import type { Lang } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+  alternateUrl: string;
+}
+
+const { lang, alternateUrl } = Astro.props;
+const altLang: Lang = lang === 'es' ? 'en' : 'es';
+---
+
+<div
+  class="flex items-stretch text-xs font-mono font-medium leading-none border border-edge dark:border-dark-edge rounded-lg overflow-hidden"
+  role="group"
+  aria-label="Language selector"
+>
+  {lang === 'es' ? (
+    <span class="px-2.5 py-1.5 bg-cobalt text-white" aria-current="true">ES</span>
+  ) : (
+    <a
+      href={alternateUrl}
+      class="px-2.5 py-1.5 text-ink-muted dark:text-dark-muted hover:bg-surface-2 dark:hover:bg-dark-2 hover:text-ink dark:hover:text-dark-ink transition-colors"
+      aria-label="Cambiar a Español"
+      onclick="localStorage.setItem('lang','es')"
+    >ES</a>
+  )}
+  <span class="w-px self-stretch bg-edge dark:bg-dark-edge"></span>
+  {lang === 'en' ? (
+    <span class="px-2.5 py-1.5 bg-cobalt text-white" aria-current="true">EN</span>
+  ) : (
+    <a
+      href={alternateUrl}
+      class="px-2.5 py-1.5 text-ink-muted dark:text-dark-muted hover:bg-surface-2 dark:hover:bg-dark-2 hover:text-ink dark:hover:text-dark-ink transition-colors"
+      aria-label="Switch to English"
+      onclick="localStorage.setItem('lang','en')"
+    >EN</a>
+  )}
+</div>
